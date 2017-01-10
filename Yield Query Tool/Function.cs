@@ -135,7 +135,7 @@ namespace Yield_Query_Tool
             if (Step_listBox.SelectedItems.Count != 0)// first row is for blank
             {
 
-                sql = "select distinct [DataSet] from [Step_DataSet_DataName] where [Step] in ('" + ListBox2SQL_in_Query_String(Step_listBox).Replace(",","','") + "')";
+                sql = "select distinct [DataSet] from [Step_DataSet_DataName] where [Step] in ('" + ListBox2SQL_in_Query_String(Step_listBox).Replace(",", "','") + "')";
 
                 //DataSet_listBox.Items.Add("All");
 
@@ -257,8 +257,10 @@ namespace Yield_Query_Tool
                     }
                     sql += ')';
                 }
-                else
+                else if (DataName.Contains("%"))
                     sql += " and " + "e.DATA_NAME like '" + DataName + "'";
+                else
+                    sql += " and " + "e.DATA_NAME = '" + DataName + "'";
 
             if (DataNameVal.Length != 0)
                 sql += " and " + "e.DATA_VAL1 " + DataNameVal;
@@ -311,8 +313,8 @@ namespace Yield_Query_Tool
             "d.STATION as Station, j.Computer as Computer,d.ROUTE_ID as Route_ID," +
             "d.DATASET_ID as DataSet_ID, d.ATE_VERSION as ATE_Version," +
             "b.STATE as Current_State, b.STATUS as Current_Status" +
-        " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID"+
-        " INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID INNER JOIN STATIONS j on J.Name=D.Station"+
+        " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID" +
+        " INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID INNER JOIN STATIONS j on J.Name=D.Station" +
         " INNER JOIN route_data e ON e.DATASET_ID = d.DATASET_ID  WHERE '1' = '1'";
             if (SerialNumber.Length != 0)
             {
@@ -447,7 +449,7 @@ namespace Yield_Query_Tool
         public DataSet MainOracleQuery(string connectionstring, string SerialNumber, string JobOrder,
                     string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataName, string DataNameVal,
                     string DataSetStatus, string DataStatus, string StartTime, string EndTime, Label InformLabel, string Comp_SN, string Comp_Type,
-            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked)
+            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type,string Comp_PN)
         {
             if (Comp_eData_Include_checkBox_Checked)
             {
@@ -549,8 +551,11 @@ namespace Yield_Query_Tool
                     sql += ')';
                 }
 
-                else
+                else if (DataName.Contains("%"))
                     sql += " and " + "e.DATA_NAME like '" + DataName + "'";
+                else
+                    sql += " and " + "e.DATA_NAME = '" + DataName + "'";
+
             }
 
             if (DataNameVal.Length != 0)
@@ -575,6 +580,13 @@ namespace Yield_Query_Tool
                     Comp_SN = Comp_SN.Replace(",", "','");
                     sql += " and " + "y.MFR_SN in ('" + Comp_SN + "')";
                 }
+
+                if (Comp_PN.Length != 0)
+                {
+                    Comp_PN = Comp_PN.Replace(",", "','");
+                    sql += " and " + "y.MFR_PN in ('" + Comp_PN + "')";
+                }
+
 
                 if (Comp_Type.Length != 0)
                 {
@@ -610,6 +622,14 @@ namespace Yield_Query_Tool
                     sql += " and " + "v.DATA_VAL1 " + Comp_edata_name_Val;
             }
 
+
+            if (Search_Record_Type == "FirstRecord")
+                sql += "ORDER BY a.MFR_SN,  d.DATASET_NAME, e.DATA_NAME, d.END_TIME";
+
+            if (Search_Record_Type == "LastRecord")
+                sql += "ORDER BY a.MFR_SN,  d.DATASET_NAME, e.DATA_NAME, d.END_TIME DESC";
+
+
             //----------------------------------------------
             //sql += " and D.Ate_Version like 'ATE_Code-Wuxi-1.00-%_DL'";
             //----------------------------------------------
@@ -620,6 +640,9 @@ namespace Yield_Query_Tool
             //InformLabel.Text = "Searching...";
             //ds = oracledbo.GetOracleDataSet2(sql, OracleConn);
             ds = GetOracleDataSet2(connectionstring, sql);
+            if (Search_Record_Type == "FirstRecord" || Search_Record_Type == "LastRecord")
+                ds = RemoveDuplicateRows(ds.Tables[0]);
+
             //oracledbo.OracleConnectionClose();
             //OracleConn.Close();
             return ds;
@@ -627,18 +650,20 @@ namespace Yield_Query_Tool
 
 
 
-        public string TimePickerFormat(DateTimePicker datetime)
+        public string TimePickerFormat(DateTimePicker datetime, string HHMMSS)
         {
             string yyyymmdd073000;
             //datetime.Format=DateTimePickerFormat.Custom;
             //datetime.CustomFormat="yyyyMMdd";
-            yyyymmdd073000 = datetime.Value.ToString("yyyyMMdd") + "073000";
+            yyyymmdd073000 = datetime.Value.ToString("yyyyMMdd") + HHMMSS;
             return yyyymmdd073000;
 
         }
 
         public void InitialTimePicker(DateTimePicker StartTime, DateTimePicker EndTime)
         {// pcik up now time as default starttimepicker and endtime picker
+            //StartTime.Format = DateTimePickerFormat.Long;
+            //StartTime.ShowUpDown = true;
             StartTime.Text = DateTime.Now.ToString();
             EndTime.Text = DateTime.Now.ToString();
         }
@@ -984,7 +1009,7 @@ namespace Yield_Query_Tool
 
 
 
-            int Flag = QueryResultTable.Columns.Count+1;
+            int Flag = QueryResultTable.Columns.Count + 1;
             //int RowNumber;
 
             DataSet FPYandFYRawData = new DataSet("FPYandFYRawData");
@@ -1848,7 +1873,7 @@ namespace Yield_Query_Tool
             string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataSetStatus, string StartTime, string EndTime, Label InformLabel)
         {
             sql = "SELECT a.MFR_SN AS SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev,d.DATASET_NAME AS DataSet_Name,d.STATUS AS DataSetStatus,d.START_TIME AS DataSet_StartTime,d.END_TIME AS DataSet_EndTime, D.Dataset_Id AS DataSet_ID, e.DATA_NAME, e.DATA_VAL1" +
-                   " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID  INNER JOIN ROUTE_DATA e ON e.DATASET_ID = d.DATASET_ID"+
+                   " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID  INNER JOIN ROUTE_DATA e ON e.DATASET_ID = d.DATASET_ID" +
                    " WHERE '1' = '1' AND (E.Data_Name like '%:TestSeconds' OR E.Data_Name = 'elapsed_seconds')";
             if (SerialNumber.Length != 0)
             {
@@ -2771,6 +2796,96 @@ namespace Yield_Query_Tool
             }
 
         }
+
+
+
+
+        public DataSet RemoveDuplicateRows(DataTable FPYRawData)
+        {
+
+            //"SELECT a.MFR_SN AS Module_SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev," +
+            //    "d.DATASET_NAME AS DataSet_Name,d.STATUS AS DataSetStatus,d.END_TIME AS DataSet_EndTime," +
+            //    "e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec, "
+
+            DataSet returnDataset = new DataSet();
+
+
+            int SN = 1;
+            int JobID = 2;
+            int ModelID = 3;
+            int BOMPN = 4;
+            int BOMPNRev = 5;
+            int DataSetName = 6;
+            int DataSetStatus = 7;
+            int DataSetEndtime = 8;
+            int DataName = 9;
+  
+
+            int Flag = FPYRawData.Columns.Count + 1;
+
+            FPYRawData.Columns.Add("Flag");
+
+
+            #region filt and get first column data
+            for (int i = 0; i <= FPYRawData.Rows.Count - 1; i++)//Filter out the FIRST record of each datasetname
+            {
+
+
+                string tempSN = FPYRawData.Rows[i][SN - 1].ToString();
+                string tempdatasetname = FPYRawData.Rows[i][DataSetName - 1].ToString();
+                string tempdatasettime = FPYRawData.Rows[i][DataSetEndtime - 1].ToString();
+                string tempBOMPN = FPYRawData.Rows[i][BOMPN - 1].ToString();
+                string tempBOMPNRev = FPYRawData.Rows[i][BOMPNRev - 1].ToString();
+                string tempDataName = FPYRawData.Rows[i][DataName - 1].ToString();
+
+
+                for (int j = i + 1; j <= FPYRawData.Rows.Count - 1; j++)
+                {
+                    if (FPYRawData.Rows[j][SN - 1].ToString() == tempSN &&
+                        FPYRawData.Rows[j][BOMPN - 1].ToString() == tempBOMPN &&
+                        FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev &&
+                        FPYRawData.Rows[j][DataSetName - 1].ToString() == tempdatasetname&&
+                        FPYRawData.Rows[j][DataName - 1].ToString() == tempDataName)
+                        FPYRawData.Rows[j][Flag-1]="Del";
+
+
+                }
+
+
+
+
+            }
+
+            for (int i = FPYRawData.Rows.Count - 1; i >= 0; i--)
+            {
+                if (FPYRawData.Rows[i][Flag - 1] == "Del")
+                    FPYRawData.Rows[i].Delete();
+            }
+
+            FPYRawData.AcceptChanges();
+         
+
+
+
+            returnDataset.Tables.Add(FPYRawData.Copy());
+            return returnDataset;
+            //return FPYRawData;
+
+
+            #endregion
+
+
+
+
+
+        }
+
+
+
+
+
+
+
     }
 }
 

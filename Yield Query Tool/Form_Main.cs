@@ -31,7 +31,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "4.1";
+        public string SWVersion = "4.2";
 
         //
 
@@ -55,13 +55,13 @@ namespace Yield_Query_Tool
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            StartTime = fc.TimePickerFormat(StartTimePicker);
+            StartTime = fc.TimePickerFormat(StartTimePicker, StartTime_HHMMSS_textBox.Text);
 
         }
 
         private void EndTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            EndTime = fc.TimePickerFormat(EndTimePicker);
+            EndTime = fc.TimePickerFormat(EndTimePicker, EndTime_HHMMSS_textBox.Text);
         }
 
 
@@ -162,13 +162,20 @@ namespace Yield_Query_Tool
             MainPanelInformLabel.ForeColor = System.Drawing.Color.Red;
             Application.DoEvents();
             //SearchDataGridView.Rows.Clear();
+            string Search_Record_Type = "AllRecord";
+
+            if (Search_FirstRecord_checkBox.Checked)
+                Search_Record_Type = "FirstRecord";
+            if (Search_LastRecord_checkBox.Checked)
+                Search_Record_Type = "LastRecord";
+
             DateTime start = DateTime.Now;
             ds = fc.MainOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                 BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(),
                 Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
                 DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel,
                 Comp_SN_textBox.Text.Trim(), Comp_Type_InforLabel.Text.Trim(), Comp_eDataName_comboBox.Text.Trim(), Comp_eData_Value_textBox.Text.Trim(),
-                Comp_eData_Include_checkBox.Checked);
+                Comp_eData_Include_checkBox.Checked, Search_Record_Type,Comp_PN_textBox.Text.Trim());
             SearchDataGridView.DataSource = ds;
             SearchDataGridView.DataMember = ds.Tables[0].TableName;
             //SearchDataGridView = fc.ChangeDataGridColor(SearchDataGridView);
@@ -601,13 +608,13 @@ namespace Yield_Query_Tool
         //This section is for ER CPK used only
         private void dateTimePicker_ERCPK_Start_ValueChanged(object sender, EventArgs e)
         {
-            StartTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_Start);
+            StartTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_Start, "073000");
 
         }
 
         private void dateTimePicker_ERCPK_End_ValueChanged(object sender, EventArgs e)
         {
-            EndTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_End);
+            EndTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_End, "073000");
         }
 
         private void ER_CPK_button_Click(object sender, EventArgs e)
@@ -994,18 +1001,21 @@ namespace Yield_Query_Tool
         private void Logger(string QueryType)
         {
             string LogFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "Log.txt";
+            string LogHeadLine = "Qurey_Type\tSN\tJO#\tBOM_PN\tRev\tModel_ID\tStep\tDataSet\tDataSet_Status\tDataName\tData_Status\tDataVal\tStart_Time\tEnd_Time\tLSL\tUSL\tQuery_Time\t"
+                + "Component_SN\tComponent_Type\tComponent_Edata_Name\tComponent_Edata_Value\tTest_DB_Checked\tComp_eData_Checked\tSearch_First_Record_Checked\tSearch_Last_Record_Checked"
+                + "\tComponent_PN";
 
             if (File.Exists(LogFilePath) == false)
             {
-                //不存在文件
+                //不存在文件 或者存在文件，则对比文件首行LogHeadLine,如果不一致,则删除txt所有内容，然后新增首行LogHeadLine
                 //File.Create(LogFilePath);//创建该文件
                 FileStream fs = new FileStream(LogFilePath, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
 
 
+
                 //开始写入
-                sw.Write("Qurey_Type\tSN\tJO#\tBOM_PN\tRev\tModel_ID\tStep\tDataSet\tDataSet_Status\tDataName\tData_Status\tDataVal\tStart_Time\tEnd_Time\tLSL\tUSL\tQuery_Time\t"
-                + "Component_SN\tComponent_Type\tComponent_Edata_Name\tComponent_Edata_Value\tTest_DB_Checked\tComp_eData_Checked");
+                sw.Write(LogHeadLine);
                 //清空缓冲区
                 sw.Flush();
                 //关闭流
@@ -1015,6 +1025,31 @@ namespace Yield_Query_Tool
 
 
             }
+            else
+            {
+                //存在文件，则对比文件首行LogHeadLine,如果不一致,则删除txt所有内容，然后新增首行LogHeadLine
+                FileStream fs = new FileStream(LogFilePath, FileMode.Open);
+                StreamReader sr = new StreamReader(fs);
+
+                if (sr.ReadLine().ToString() != LogHeadLine)
+                {
+                    fs.Close();
+                    sr.Close();
+                    FileStream ffs = new FileStream(LogFilePath, FileMode.Create);
+                    StreamWriter sw = new StreamWriter(ffs);
+                    sw.Write(LogHeadLine);
+                    sw.Flush();
+                    sw.Close();
+                }
+
+
+                fs.Close();
+                sr.Close();
+
+
+
+            }
+
 
 
             FileStream Fs = new FileStream(LogFilePath, FileMode.Append);
@@ -1023,7 +1058,8 @@ namespace Yield_Query_Tool
                 fc.ListBox2SQL_in_Query_String(DataSet_listBox).Trim() + "\t" + DataSetStatus.Text.Trim() + "\t" + DataName.Text.Trim() + "\t" + DataNameStatus.Text.Trim() + "\t" + DataNameVal.Text.Trim() + "\t"
                + StartTime.ToString() + "\t" + EndTime.ToString() + "\t" + LSL_Val.Text.Trim() + "\t" + USL_Val.Text.Trim() + "\t" + DateTime.Now.ToString() + "\t" + Comp_SN_textBox.Text.Trim()
                + "\t" + fc.ListBox2SQL_in_Query_String(Comp_Type_listBox).Trim() + "\t" + Comp_eDataName_comboBox.Text.ToString().Trim() + "\t" + Comp_eData_Value_textBox.Text.Trim() + "\t" +
-               Test_DB_Enable_checkBox.Checked.ToString() + "\t" + Comp_eData_Include_checkBox.Checked.ToString());
+               Test_DB_Enable_checkBox.Checked.ToString() + "\t" + Comp_eData_Include_checkBox.Checked.ToString() + "\t" + Search_FirstRecord_checkBox.Checked.ToString() + "\t" + Search_LastRecord_checkBox.Checked.ToString()+ "\t" +
+               Comp_PN_textBox.Text.Trim());
             Sw.Flush();
             //关闭流
             Sw.Close();
@@ -1059,6 +1095,8 @@ namespace Yield_Query_Tool
                     }
 
                     sw.WriteLine(st);
+
+                    Fs.Close();
                     sw.Close();
                     myStream.Close();
                 }
@@ -1068,6 +1106,7 @@ namespace Yield_Query_Tool
                 }
                 finally
                 {
+                    
                     sw.Close();
                     myStream.Close();
                 }
@@ -1095,10 +1134,15 @@ namespace Yield_Query_Tool
                     Stream myStream = dlg.OpenFile();
                     StreamReader sr = new StreamReader(myStream);
 
-                    // Read the stream to a string, and write the string to the console.
-                    line = sr.ReadToEnd().Trim();
+                    // Read the stream to a string
+                    line = sr.ReadToEnd();// do NOT use Trim() here
 
                     ReadQuryHistory(line);
+
+                    myStream.Close();
+                    sr.Close();
+
+                    dlg.Dispose();
 
 
 
@@ -1106,8 +1150,9 @@ namespace Yield_Query_Tool
                 }
                 catch (Exception exxxxxx)
                 {
-                    Console.WriteLine("The file could not be read:\n");
-                    Console.WriteLine(exxxxxx.Message);
+                    MessageBox.Show("The file could not be read:\n" + exxxxxx.Message);
+                
+                    dlg.Dispose();
                 }
 
 
@@ -1141,6 +1186,10 @@ namespace Yield_Query_Tool
             int Comp_eData_Value = 20;
             int Test_DB_Checked = 21;
             int Comp_eData_Include_checkBox_Checked = 22;
+            int Search_First_Record_ChecBox_Checked = 23;
+            int Search_Last_Record_ChecBox_Checked = 24;
+            int Comp_PN = 25;
+
 
             string[] FieldName = QueryHistroyString.Split('\t');
 
@@ -1168,18 +1217,21 @@ namespace Yield_Query_Tool
 
             StartTimePicker.Value = DateTime.ParseExact(FieldName[Start_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
             EndTimePicker.Value = DateTime.ParseExact(FieldName[End_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
-
+            StartTime_HHMMSS_textBox.Text = FieldName[Start_Time].Substring(8, FieldName[Start_Time].Length - 8);
+            EndTime_HHMMSS_textBox.Text = FieldName[End_Time].Substring(8, FieldName[End_Time].Length - 8);
 
             LSL_Val.Text = FieldName[LSL_Value];
             USL_Val.Text = FieldName[USL_Value];
 
             Comp_SN_textBox.Text = FieldName[Comp_SN];
+            Comp_PN_textBox.Text = FieldName[Comp_PN];
             Comp_Type_InforLabel.Text = FieldName[Comp_Type];
             Comp_eDataName_comboBox.Text = FieldName[Comp_eDataName];
             Comp_eData_Value_textBox.Text = FieldName[Comp_eData_Value];
             Test_DB_Enable_checkBox.Checked = bool.Parse(FieldName[Test_DB_Checked]);
             Comp_eData_Include_checkBox.Checked = bool.Parse(FieldName[Comp_eData_Include_checkBox_Checked]);
-
+            Search_FirstRecord_checkBox.Checked = bool.Parse(FieldName[Search_First_Record_ChecBox_Checked]);
+            Search_LastRecord_checkBox.Checked = bool.Parse(FieldName[Search_Last_Record_ChecBox_Checked]);
 
             YieldEnablecheckBox.Checked = false;
             CPKEnablecheckBox.Checked = false;
@@ -1199,6 +1251,8 @@ namespace Yield_Query_Tool
                 DataSet_TestTime_checkBox.Checked = true;
 
 
+
+            
 
 
 
@@ -1332,6 +1386,10 @@ namespace Yield_Query_Tool
                 Comp_SN_textBox.Enabled = true;
                 Comp_SN_Import_button.Enabled = true;
 
+                Comp_PN_label.Enabled = true;
+                Comp_PN_textBox.Enabled = true;
+                Comp_PN_Import_button.Enabled = true;
+
                 Comp_Type_label.Enabled = true;
                 Comp_Type_listBox.Enabled = true;
 
@@ -1347,6 +1405,10 @@ namespace Yield_Query_Tool
                 Comp_SN_label.Enabled = false; ;
                 Comp_SN_textBox.Enabled = false;
                 Comp_SN_Import_button.Enabled = false;
+
+                Comp_PN_label.Enabled = false;
+                Comp_PN_textBox.Enabled = false;
+                Comp_PN_Import_button.Enabled = false;
 
                 Comp_Type_label.Enabled = false;
                 Comp_Type_listBox.Enabled = false;
@@ -1369,6 +1431,8 @@ namespace Yield_Query_Tool
 
                 SearchButton.Enabled = true;
                 Comp_eData_Include_checkBox.Enabled = true;
+                Search_FirstRecord_checkBox.Enabled = true;
+                Search_LastRecord_checkBox.Enabled = true;
 
             }
             else
@@ -1380,6 +1444,9 @@ namespace Yield_Query_Tool
                 SearchButton.Enabled = false;
                 Comp_eData_Include_checkBox.Enabled = false;
                 Comp_eData_Include_checkBox.Checked = false;
+                Search_FirstRecord_checkBox.Enabled = false;
+                Search_LastRecord_checkBox.Enabled = false;
+
 
             }
 
@@ -1420,6 +1487,34 @@ namespace Yield_Query_Tool
         {
             Selected_Dataset_InforLabel.Text = fc.ReadListFromTxt();
             //Selected_Dataset_InforLabel.ForeColor = System.Drawing.Color.Blue;
+        }
+
+        private void StartTime_HHMMSS_textBox_TextChanged(object sender, EventArgs e)
+        {
+            StartTime = fc.TimePickerFormat(StartTimePicker, StartTime_HHMMSS_textBox.Text);
+        }
+
+        private void EndTime_HHMMSS_textBox_TextChanged(object sender, EventArgs e)
+        {
+            EndTime = fc.TimePickerFormat(EndTimePicker, EndTime_HHMMSS_textBox.Text);
+        }
+
+        private void Search_FirstRecord_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Search_FirstRecord_checkBox.Checked)
+                Search_LastRecord_checkBox.Checked = false;
+
+        }
+
+        private void Search_LastRecord_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Search_LastRecord_checkBox.Checked)
+                Search_FirstRecord_checkBox.Checked = false;
+        }
+
+        private void Comp_PN_Import_button_Click(object sender, EventArgs e)
+        {
+            Comp_PN_textBox.Text = fc.ReadListFromTxt();
         }
 
 
