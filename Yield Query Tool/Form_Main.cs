@@ -1189,7 +1189,7 @@ namespace Yield_Query_Tool
             int Search_First_Record_ChecBox_Checked = 23;
             int Search_Last_Record_ChecBox_Checked = 24;
             int Comp_PN = 25;
-            int Comp_Already_Removed_checkBox_Checked = 25;
+            int Comp_Already_Removed_checkBox_Checked = 26;
 
 
             string[] FieldName = QueryHistroyString.Split('\t');
@@ -1421,6 +1421,8 @@ namespace Yield_Query_Tool
                 Comp_eDataName_button.Enabled = false;
 
                 Comp_Already_Removed_checkBox.Enabled = false;
+                Comp_Already_Removed_checkBox.Checked = false;
+
             }
 
 
@@ -1520,6 +1522,11 @@ namespace Yield_Query_Tool
         private void Comp_PN_Import_button_Click(object sender, EventArgs e)
         {
             Comp_PN_textBox.Text = fc.ReadListFromTxt();
+        }
+
+        private void WhereUsed_dataGridView_Export_button_Click(object sender, EventArgs e)
+        {
+            fc.DataGridViewToExcel(WhereUsed_dataGridView);
         }
 
 

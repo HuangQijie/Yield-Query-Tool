@@ -39,6 +39,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.Comp_Already_Removed_checkBox = new System.Windows.Forms.CheckBox();
             this.Comp_Type_listBox = new System.Windows.Forms.ListBox();
             this.Comp_PN_Import_button = new System.Windows.Forms.Button();
             this.Comp_PN_textBox = new System.Windows.Forms.TextBox();
@@ -189,7 +190,7 @@
             this.Component_Edata_dataGridView = new System.Windows.Forms.DataGridView();
             this.MainPanelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.Comp_Already_Removed_checkBox = new System.Windows.Forms.CheckBox();
+            this.WhereUsed_dataGridView_Export_button = new System.Windows.Forms.Button();
             this.MainTabControl.SuspendLayout();
             this.MainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDataGridView)).BeginInit();
@@ -326,6 +327,17 @@
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Main Panel";
             this.MainTab.UseVisualStyleBackColor = true;
+            // 
+            // Comp_Already_Removed_checkBox
+            // 
+            this.Comp_Already_Removed_checkBox.AutoSize = true;
+            this.Comp_Already_Removed_checkBox.Enabled = false;
+            this.Comp_Already_Removed_checkBox.Location = new System.Drawing.Point(229, 263);
+            this.Comp_Already_Removed_checkBox.Name = "Comp_Already_Removed_checkBox";
+            this.Comp_Already_Removed_checkBox.Size = new System.Drawing.Size(146, 17);
+            this.Comp_Already_Removed_checkBox.TabIndex = 90;
+            this.Comp_Already_Removed_checkBox.Text = "Comp_Already_Removed";
+            this.Comp_Already_Removed_checkBox.UseVisualStyleBackColor = true;
             // 
             // Comp_Type_listBox
             // 
@@ -1156,7 +1168,7 @@
             // FYResultTableExport
             // 
             this.FYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYResultTableExport.Location = new System.Drawing.Point(693, 569);
+            this.FYResultTableExport.Location = new System.Drawing.Point(676, 569);
             this.FYResultTableExport.Name = "FYResultTableExport";
             this.FYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FYResultTableExport.TabIndex = 10;
@@ -1167,7 +1179,7 @@
             // FPYResultTableExport
             // 
             this.FPYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYResultTableExport.Location = new System.Drawing.Point(693, 7);
+            this.FPYResultTableExport.Location = new System.Drawing.Point(676, 7);
             this.FPYResultTableExport.Name = "FPYResultTableExport";
             this.FPYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FPYResultTableExport.TabIndex = 9;
@@ -1186,7 +1198,7 @@
             this.FYTabledataGridView.Location = new System.Drawing.Point(9, 598);
             this.FYTabledataGridView.Name = "FYTabledataGridView";
             this.FYTabledataGridView.ReadOnly = true;
-            this.FYTabledataGridView.Size = new System.Drawing.Size(764, 166);
+            this.FYTabledataGridView.Size = new System.Drawing.Size(747, 166);
             this.FYTabledataGridView.TabIndex = 8;
             // 
             // FPYTabledataGridView
@@ -1200,13 +1212,13 @@
             this.FPYTabledataGridView.Location = new System.Drawing.Point(9, 43);
             this.FPYTabledataGridView.Name = "FPYTabledataGridView";
             this.FPYTabledataGridView.ReadOnly = true;
-            this.FPYTabledataGridView.Size = new System.Drawing.Size(764, 166);
+            this.FPYTabledataGridView.Size = new System.Drawing.Size(747, 166);
             this.FPYTabledataGridView.TabIndex = 8;
             // 
             // FYRawDataExport
             // 
             this.FYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYRawDataExport.Location = new System.Drawing.Point(693, 775);
+            this.FYRawDataExport.Location = new System.Drawing.Point(676, 775);
             this.FYRawDataExport.Name = "FYRawDataExport";
             this.FYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FYRawDataExport.TabIndex = 7;
@@ -1217,7 +1229,7 @@
             // FPYRawDataExport
             // 
             this.FPYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYRawDataExport.Location = new System.Drawing.Point(693, 221);
+            this.FPYRawDataExport.Location = new System.Drawing.Point(676, 221);
             this.FPYRawDataExport.Name = "FPYRawDataExport";
             this.FPYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FPYRawDataExport.TabIndex = 7;
@@ -1255,7 +1267,7 @@
             this.FYRawdataGridView.Location = new System.Drawing.Point(9, 805);
             this.FYRawdataGridView.Name = "FYRawdataGridView";
             this.FYRawdataGridView.ReadOnly = true;
-            this.FYRawdataGridView.Size = new System.Drawing.Size(764, 316);
+            this.FYRawdataGridView.Size = new System.Drawing.Size(747, 316);
             this.FYRawdataGridView.TabIndex = 5;
             this.FYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1270,7 +1282,7 @@
             this.FPYRawdataGridView.Location = new System.Drawing.Point(9, 254);
             this.FPYRawdataGridView.Name = "FPYRawdataGridView";
             this.FPYRawdataGridView.ReadOnly = true;
-            this.FPYRawdataGridView.Size = new System.Drawing.Size(764, 304);
+            this.FPYRawdataGridView.Size = new System.Drawing.Size(747, 304);
             this.FPYRawdataGridView.TabIndex = 4;
             this.FPYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1490,6 +1502,7 @@
             // 
             // WhereUsedTab
             // 
+            this.WhereUsedTab.Controls.Add(this.WhereUsed_dataGridView_Export_button);
             this.WhereUsedTab.Controls.Add(this.WhereUsed_SN_button);
             this.WhereUsedTab.Controls.Add(this.Where_Used_button);
             this.WhereUsedTab.Controls.Add(this.WhereUsed_dataGridView);
@@ -1699,7 +1712,7 @@
             // FY_Plot_Export_button
             // 
             this.FY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Plot_Export_button.Location = new System.Drawing.Point(692, 1277);
+            this.FY_Plot_Export_button.Location = new System.Drawing.Point(675, 1277);
             this.FY_Plot_Export_button.Name = "FY_Plot_Export_button";
             this.FY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Plot_Export_button.TabIndex = 5;
@@ -1710,7 +1723,7 @@
             // FPY_Plot_Export_button
             // 
             this.FPY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(692, 313);
+            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(675, 313);
             this.FPY_Plot_Export_button.Name = "FPY_Plot_Export_button";
             this.FPY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Plot_Export_button.TabIndex = 4;
@@ -1721,7 +1734,7 @@
             // FY_Yield_Plot_data_button
             // 
             this.FY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(692, 967);
+            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(675, 967);
             this.FY_Yield_Plot_data_button.Name = "FY_Yield_Plot_data_button";
             this.FY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Yield_Plot_data_button.TabIndex = 3;
@@ -1732,7 +1745,7 @@
             // FPY_Yield_Plot_data_button
             // 
             this.FPY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(692, 7);
+            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(675, 7);
             this.FPY_Yield_Plot_data_button.Name = "FPY_Yield_Plot_data_button";
             this.FPY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Yield_Plot_data_button.TabIndex = 2;
@@ -1755,7 +1768,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.FY_Yield_Plot_chart.Series.Add(series1);
-            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(747, 541);
+            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(730, 541);
             this.FY_Yield_Plot_chart.TabIndex = 1;
             this.FY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1774,7 +1787,7 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.FPY_Yield_Plot_chart.Series.Add(series2);
-            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(769, 563);
+            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(752, 563);
             this.FPY_Yield_Plot_chart.TabIndex = 1;
             this.FPY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1789,7 +1802,7 @@
             this.FY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 1005);
             this.FY_Yield_Plot_dataGridView.Name = "FY_Yield_Plot_dataGridView";
             this.FY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(750, 266);
+            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(733, 266);
             this.FY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1804,7 +1817,7 @@
             this.FPY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 36);
             this.FPY_Yield_Plot_dataGridView.Name = "FPY_Yield_Plot_dataGridView";
             this.FPY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(750, 260);
+            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(733, 260);
             this.FPY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FPY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1948,16 +1961,16 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // Comp_Already_Removed_checkBox
+            // WhereUsed_dataGridView_Export_button
             // 
-            this.Comp_Already_Removed_checkBox.AutoSize = true;
-            this.Comp_Already_Removed_checkBox.Enabled = false;
-            this.Comp_Already_Removed_checkBox.Location = new System.Drawing.Point(229, 263);
-            this.Comp_Already_Removed_checkBox.Name = "Comp_Already_Removed_checkBox";
-            this.Comp_Already_Removed_checkBox.Size = new System.Drawing.Size(146, 17);
-            this.Comp_Already_Removed_checkBox.TabIndex = 90;
-            this.Comp_Already_Removed_checkBox.Text = "Comp_Already_Removed";
-            this.Comp_Already_Removed_checkBox.UseVisualStyleBackColor = true;
+            this.WhereUsed_dataGridView_Export_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.WhereUsed_dataGridView_Export_button.Location = new System.Drawing.Point(995, 103);
+            this.WhereUsed_dataGridView_Export_button.Name = "WhereUsed_dataGridView_Export_button";
+            this.WhereUsed_dataGridView_Export_button.Size = new System.Drawing.Size(75, 25);
+            this.WhereUsed_dataGridView_Export_button.TabIndex = 40;
+            this.WhereUsed_dataGridView_Export_button.Text = "Export";
+            this.WhereUsed_dataGridView_Export_button.UseVisualStyleBackColor = true;
+            this.WhereUsed_dataGridView_Export_button.Click += new System.EventHandler(this.WhereUsed_dataGridView_Export_button_Click);
             // 
             // MainForm
             // 
@@ -2162,6 +2175,7 @@
         private System.Windows.Forms.TextBox Comp_PN_textBox;
         private System.Windows.Forms.Label Comp_PN_label;
         private System.Windows.Forms.CheckBox Comp_Already_Removed_checkBox;
+        private System.Windows.Forms.Button WhereUsed_dataGridView_Export_button;
     }
 }
 
