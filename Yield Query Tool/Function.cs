@@ -449,10 +449,12 @@ namespace Yield_Query_Tool
         public DataSet MainOracleQuery(string connectionstring, string SerialNumber, string JobOrder,
                     string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataName, string DataNameVal,
                     string DataSetStatus, string DataStatus, string StartTime, string EndTime, Label InformLabel, string Comp_SN, string Comp_Type,
-            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type,string Comp_PN)
+            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type, string Comp_PN, 
+            bool Comp_Already_Removed_checkBox_Checked)
         {
             if (Comp_eData_Include_checkBox_Checked)
             {
+
                 sql = "SELECT a.MFR_SN AS Module_SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev," +
                 "d.DATASET_NAME AS DataSet_Name,d.STATUS AS DataSetStatus,d.END_TIME AS DataSet_EndTime," +
                 "e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec, " +
@@ -468,6 +470,9 @@ namespace Yield_Query_Tool
                 " INNER JOIN PARTS y on y.OPT_INDEX=x.CHILD_INDEX" +
                 " INNER JOIN PART_DATA v ON v.OPT_INDEX=x.CHILD_INDEX" +
                 "  WHERE '1' = '1'";
+
+                if (Comp_Already_Removed_checkBox_Checked)
+                    sql = sql.Replace("INNER JOIN Assembly x on x.PARENT_INDEX=a.OPT_INDEX", "INNER JOIN Assembly_History x on x.ROUTE_ID=b.ROUTE_ID");
             }
             else
             {
@@ -1822,10 +1827,11 @@ namespace Yield_Query_Tool
         {
             DataSet ds;
             string sql;
-            string sql_AlreadyRemovedYes = "select a.MFR_SN as Module_SN,a.MFR_PN as Module_PN,y.MFR_SN as Component_SN,y.MFR_PN as Component_PN,Z.Operation,Z.Notes " +
-                "from PARTS a inner join ROUTES b on A.Opt_Index=B.Part_Index inner join Assembly_History z on Z.Route_Id=B.Route_Id inner join PARTS y on y.Opt_Index=Z.Child_Index where z.OPERATION='rm' and y.MFR_SN ";
-            string sql_AlradyRemovedNo = "select a.MFR_SN as Module_SN,a.MFR_PN as Module_PN,y.MFR_SN as Component_SN,y.MFR_PN as Component_PN,x.NOTES as NOTES " +
-                "from PARTS a inner join ASSEMBLY x on a.OPT_INDEX=x.PARENT_INDEX  inner join PARTS y on y.OPT_INDEX=x.CHILD_INDEX where y.MFR_SN ";
+            string sql_AlreadyRemovedYes = "select a.MFR_SN as Module_SN,a.MFR_PN as Module_PN, f.MODEL_ID as Model_ID, y.MFR_SN as Component_SN,y.MFR_PN as Component_PN,Z.ROUTE_ID,Z.Operation,Z.Notes, Z.TIME as Operation_Time " +
+                "from PARTS a inner join ROUTES b on A.Opt_Index=B.Part_Index inner join BOM_CONTEXT_ID f on b.BOM_CONTEXT_ID=f.BOM_CONTEXT_ID inner join Assembly_History z on Z.Route_Id=B.Route_Id inner join PARTS y on y.Opt_Index=Z.Child_Index where z.OPERATION='rm' and y.MFR_SN ";
+            string sql_AlradyRemovedNo = "select a.MFR_SN as Module_SN,a.MFR_PN as Module_PN, f.MODEL_ID as Model_ID, y.MFR_SN as Component_SN,y.MFR_PN as Component_PN, b.ROUTE_ID, x.NOTES as NOTES " +
+                "from PARTS a inner join ROUTES b on A.Opt_Index=B.Part_Index inner join BOM_CONTEXT_ID f on b.BOM_CONTEXT_ID=f.BOM_CONTEXT_ID inner join " +
+                "ASSEMBLY x on a.OPT_INDEX=x.PARENT_INDEX  inner join PARTS y on y.OPT_INDEX=x.CHILD_INDEX where y.MFR_SN ";
             if (SN.Length != 0)
             {
 

@@ -29,16 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.Comp_Type_listBox = new System.Windows.Forms.ListBox();
+            this.Comp_PN_Import_button = new System.Windows.Forms.Button();
+            this.Comp_PN_textBox = new System.Windows.Forms.TextBox();
+            this.Comp_PN_label = new System.Windows.Forms.Label();
             this.EndTime_HHMMSS_textBox = new System.Windows.Forms.TextBox();
             this.StartTime_HHMMSS_textBox = new System.Windows.Forms.TextBox();
             this.DataSetName_Import_button = new System.Windows.Forms.Button();
@@ -50,7 +54,6 @@
             this.Comp_Type_InforLabel = new System.Windows.Forms.Label();
             this.Step_listBox = new System.Windows.Forms.ListBox();
             this.Comp_eDataName_comboBox = new System.Windows.Forms.ComboBox();
-            this.Comp_Type_listBox = new System.Windows.Forms.ListBox();
             this.Comp_eData_Value_textBox = new System.Windows.Forms.TextBox();
             this.Comp_eData_Value_label = new System.Windows.Forms.Label();
             this.Comp_Type_label = new System.Windows.Forms.Label();
@@ -111,6 +114,8 @@
             this.SerialNumber = new System.Windows.Forms.TextBox();
             this.DataSet_TestTime_button = new System.Windows.Forms.Button();
             this.SearchDataGridView = new System.Windows.Forms.DataGridView();
+            this.Search_LastRecord_checkBox = new System.Windows.Forms.CheckBox();
+            this.Search_FirstRecord_checkBox = new System.Windows.Forms.CheckBox();
             this.YieldTab = new System.Windows.Forms.TabPage();
             this.label14 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -184,11 +189,7 @@
             this.Component_Edata_dataGridView = new System.Windows.Forms.DataGridView();
             this.MainPanelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.Search_FirstRecord_checkBox = new System.Windows.Forms.CheckBox();
-            this.Search_LastRecord_checkBox = new System.Windows.Forms.CheckBox();
-            this.Comp_PN_label = new System.Windows.Forms.Label();
-            this.Comp_PN_textBox = new System.Windows.Forms.TextBox();
-            this.Comp_PN_Import_button = new System.Windows.Forms.Button();
+            this.Comp_Already_Removed_checkBox = new System.Windows.Forms.CheckBox();
             this.MainTabControl.SuspendLayout();
             this.MainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDataGridView)).BeginInit();
@@ -239,6 +240,7 @@
             // 
             // MainTab
             // 
+            this.MainTab.Controls.Add(this.Comp_Already_Removed_checkBox);
             this.MainTab.Controls.Add(this.Comp_Type_listBox);
             this.MainTab.Controls.Add(this.Comp_PN_Import_button);
             this.MainTab.Controls.Add(this.Comp_PN_textBox);
@@ -324,6 +326,50 @@
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Main Panel";
             this.MainTab.UseVisualStyleBackColor = true;
+            // 
+            // Comp_Type_listBox
+            // 
+            this.Comp_Type_listBox.Enabled = false;
+            this.Comp_Type_listBox.FormattingEnabled = true;
+            this.Comp_Type_listBox.Location = new System.Drawing.Point(90, 228);
+            this.Comp_Type_listBox.Name = "Comp_Type_listBox";
+            this.Comp_Type_listBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.Comp_Type_listBox.Size = new System.Drawing.Size(107, 17);
+            this.Comp_Type_listBox.TabIndex = 75;
+            this.Comp_Type_listBox.SelectedIndexChanged += new System.EventHandler(this.Comp_Type_listBox_SelectedIndexChanged);
+            this.Comp_Type_listBox.DoubleClick += new System.EventHandler(this.Comp_Type_listBox_DoubleClick);
+            this.Comp_Type_listBox.MouseEnter += new System.EventHandler(this.Comp_Type_listBox_MouseEnter);
+            this.Comp_Type_listBox.MouseLeave += new System.EventHandler(this.Comp_Type_listBox_MouseLeave);
+            // 
+            // Comp_PN_Import_button
+            // 
+            this.Comp_PN_Import_button.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.Comp_PN_Import_button.Enabled = false;
+            this.Comp_PN_Import_button.Location = new System.Drawing.Point(183, 181);
+            this.Comp_PN_Import_button.Name = "Comp_PN_Import_button";
+            this.Comp_PN_Import_button.Size = new System.Drawing.Size(15, 21);
+            this.Comp_PN_Import_button.TabIndex = 89;
+            this.Comp_PN_Import_button.UseVisualStyleBackColor = false;
+            this.Comp_PN_Import_button.Click += new System.EventHandler(this.Comp_PN_Import_button_Click);
+            // 
+            // Comp_PN_textBox
+            // 
+            this.Comp_PN_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.Comp_PN_textBox.Enabled = false;
+            this.Comp_PN_textBox.Location = new System.Drawing.Point(90, 183);
+            this.Comp_PN_textBox.Name = "Comp_PN_textBox";
+            this.Comp_PN_textBox.Size = new System.Drawing.Size(91, 20);
+            this.Comp_PN_textBox.TabIndex = 88;
+            // 
+            // Comp_PN_label
+            // 
+            this.Comp_PN_label.AutoSize = true;
+            this.Comp_PN_label.Enabled = false;
+            this.Comp_PN_label.Location = new System.Drawing.Point(20, 186);
+            this.Comp_PN_label.Name = "Comp_PN_label";
+            this.Comp_PN_label.Size = new System.Drawing.Size(55, 13);
+            this.Comp_PN_label.TabIndex = 87;
+            this.Comp_PN_label.Text = "Comp_PN";
             // 
             // EndTime_HHMMSS_textBox
             // 
@@ -441,20 +487,6 @@
             this.Comp_eDataName_comboBox.Size = new System.Drawing.Size(188, 21);
             this.Comp_eDataName_comboBox.TabIndex = 76;
             this.Comp_eDataName_comboBox.TextUpdate += new System.EventHandler(this.Comp_eDataName_comboBox_TextUpdate);
-            // 
-            // Comp_Type_listBox
-            // 
-            this.Comp_Type_listBox.Enabled = false;
-            this.Comp_Type_listBox.FormattingEnabled = true;
-            this.Comp_Type_listBox.Location = new System.Drawing.Point(90, 228);
-            this.Comp_Type_listBox.Name = "Comp_Type_listBox";
-            this.Comp_Type_listBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.Comp_Type_listBox.Size = new System.Drawing.Size(107, 17);
-            this.Comp_Type_listBox.TabIndex = 75;
-            this.Comp_Type_listBox.SelectedIndexChanged += new System.EventHandler(this.Comp_Type_listBox_SelectedIndexChanged);
-            this.Comp_Type_listBox.DoubleClick += new System.EventHandler(this.Comp_Type_listBox_DoubleClick);
-            this.Comp_Type_listBox.MouseEnter += new System.EventHandler(this.Comp_Type_listBox_MouseEnter);
-            this.Comp_Type_listBox.MouseLeave += new System.EventHandler(this.Comp_Type_listBox_MouseLeave);
             // 
             // Comp_eData_Value_textBox
             // 
@@ -1054,6 +1086,30 @@
             this.SearchDataGridView.TabIndex = 28;
             this.SearchDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SearchDataGridView_CellContentDoubleClick);
             // 
+            // Search_LastRecord_checkBox
+            // 
+            this.Search_LastRecord_checkBox.AutoSize = true;
+            this.Search_LastRecord_checkBox.Enabled = false;
+            this.Search_LastRecord_checkBox.Location = new System.Drawing.Point(636, 242);
+            this.Search_LastRecord_checkBox.Name = "Search_LastRecord_checkBox";
+            this.Search_LastRecord_checkBox.Size = new System.Drawing.Size(81, 17);
+            this.Search_LastRecord_checkBox.TabIndex = 86;
+            this.Search_LastRecord_checkBox.Text = "LastRecord";
+            this.Search_LastRecord_checkBox.UseVisualStyleBackColor = true;
+            this.Search_LastRecord_checkBox.CheckedChanged += new System.EventHandler(this.Search_LastRecord_checkBox_CheckedChanged);
+            // 
+            // Search_FirstRecord_checkBox
+            // 
+            this.Search_FirstRecord_checkBox.AutoSize = true;
+            this.Search_FirstRecord_checkBox.Enabled = false;
+            this.Search_FirstRecord_checkBox.Location = new System.Drawing.Point(636, 219);
+            this.Search_FirstRecord_checkBox.Name = "Search_FirstRecord_checkBox";
+            this.Search_FirstRecord_checkBox.Size = new System.Drawing.Size(80, 17);
+            this.Search_FirstRecord_checkBox.TabIndex = 85;
+            this.Search_FirstRecord_checkBox.Text = "FirstRecord";
+            this.Search_FirstRecord_checkBox.UseVisualStyleBackColor = true;
+            this.Search_FirstRecord_checkBox.CheckedChanged += new System.EventHandler(this.Search_FirstRecord_checkBox_CheckedChanged);
+            // 
             // YieldTab
             // 
             this.YieldTab.AutoScroll = true;
@@ -1100,7 +1156,7 @@
             // FYResultTableExport
             // 
             this.FYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYResultTableExport.Location = new System.Drawing.Point(710, 569);
+            this.FYResultTableExport.Location = new System.Drawing.Point(693, 569);
             this.FYResultTableExport.Name = "FYResultTableExport";
             this.FYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FYResultTableExport.TabIndex = 10;
@@ -1111,7 +1167,7 @@
             // FPYResultTableExport
             // 
             this.FPYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYResultTableExport.Location = new System.Drawing.Point(710, 7);
+            this.FPYResultTableExport.Location = new System.Drawing.Point(693, 7);
             this.FPYResultTableExport.Name = "FPYResultTableExport";
             this.FPYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FPYResultTableExport.TabIndex = 9;
@@ -1130,7 +1186,7 @@
             this.FYTabledataGridView.Location = new System.Drawing.Point(9, 598);
             this.FYTabledataGridView.Name = "FYTabledataGridView";
             this.FYTabledataGridView.ReadOnly = true;
-            this.FYTabledataGridView.Size = new System.Drawing.Size(781, 166);
+            this.FYTabledataGridView.Size = new System.Drawing.Size(764, 166);
             this.FYTabledataGridView.TabIndex = 8;
             // 
             // FPYTabledataGridView
@@ -1144,13 +1200,13 @@
             this.FPYTabledataGridView.Location = new System.Drawing.Point(9, 43);
             this.FPYTabledataGridView.Name = "FPYTabledataGridView";
             this.FPYTabledataGridView.ReadOnly = true;
-            this.FPYTabledataGridView.Size = new System.Drawing.Size(781, 166);
+            this.FPYTabledataGridView.Size = new System.Drawing.Size(764, 166);
             this.FPYTabledataGridView.TabIndex = 8;
             // 
             // FYRawDataExport
             // 
             this.FYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYRawDataExport.Location = new System.Drawing.Point(710, 775);
+            this.FYRawDataExport.Location = new System.Drawing.Point(693, 775);
             this.FYRawDataExport.Name = "FYRawDataExport";
             this.FYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FYRawDataExport.TabIndex = 7;
@@ -1161,7 +1217,7 @@
             // FPYRawDataExport
             // 
             this.FPYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYRawDataExport.Location = new System.Drawing.Point(710, 221);
+            this.FPYRawDataExport.Location = new System.Drawing.Point(693, 221);
             this.FPYRawDataExport.Name = "FPYRawDataExport";
             this.FPYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FPYRawDataExport.TabIndex = 7;
@@ -1199,7 +1255,7 @@
             this.FYRawdataGridView.Location = new System.Drawing.Point(9, 805);
             this.FYRawdataGridView.Name = "FYRawdataGridView";
             this.FYRawdataGridView.ReadOnly = true;
-            this.FYRawdataGridView.Size = new System.Drawing.Size(781, 316);
+            this.FYRawdataGridView.Size = new System.Drawing.Size(764, 316);
             this.FYRawdataGridView.TabIndex = 5;
             this.FYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1214,7 +1270,7 @@
             this.FPYRawdataGridView.Location = new System.Drawing.Point(9, 254);
             this.FPYRawdataGridView.Name = "FPYRawdataGridView";
             this.FPYRawdataGridView.ReadOnly = true;
-            this.FPYRawdataGridView.Size = new System.Drawing.Size(781, 304);
+            this.FPYRawdataGridView.Size = new System.Drawing.Size(764, 304);
             this.FPYRawdataGridView.TabIndex = 4;
             this.FPYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1254,10 +1310,10 @@
             // 
             // CPKChart
             // 
-            chartArea10.Name = "ChartArea1";
-            this.CPKChart.ChartAreas.Add(chartArea10);
-            legend10.Name = "Legend1";
-            this.CPKChart.Legends.Add(legend10);
+            chartArea1.Name = "ChartArea1";
+            this.CPKChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.CPKChart.Legends.Add(legend1);
             this.CPKChart.Location = new System.Drawing.Point(6, 191);
             this.CPKChart.Name = "CPKChart";
             this.CPKChart.Size = new System.Drawing.Size(895, 333);
@@ -1643,7 +1699,7 @@
             // FY_Plot_Export_button
             // 
             this.FY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Plot_Export_button.Location = new System.Drawing.Point(709, 1277);
+            this.FY_Plot_Export_button.Location = new System.Drawing.Point(692, 1277);
             this.FY_Plot_Export_button.Name = "FY_Plot_Export_button";
             this.FY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Plot_Export_button.TabIndex = 5;
@@ -1654,7 +1710,7 @@
             // FPY_Plot_Export_button
             // 
             this.FPY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(709, 313);
+            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(692, 313);
             this.FPY_Plot_Export_button.Name = "FPY_Plot_Export_button";
             this.FPY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Plot_Export_button.TabIndex = 4;
@@ -1665,7 +1721,7 @@
             // FY_Yield_Plot_data_button
             // 
             this.FY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(709, 967);
+            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(692, 967);
             this.FY_Yield_Plot_data_button.Name = "FY_Yield_Plot_data_button";
             this.FY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Yield_Plot_data_button.TabIndex = 3;
@@ -1676,7 +1732,7 @@
             // FPY_Yield_Plot_data_button
             // 
             this.FPY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(709, 7);
+            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(692, 7);
             this.FPY_Yield_Plot_data_button.Name = "FPY_Yield_Plot_data_button";
             this.FPY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Yield_Plot_data_button.TabIndex = 2;
@@ -1688,18 +1744,18 @@
             // 
             this.FY_Yield_Plot_chart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea11.Name = "ChartArea1";
-            this.FY_Yield_Plot_chart.ChartAreas.Add(chartArea11);
-            legend11.Name = "Legend1";
-            this.FY_Yield_Plot_chart.Legends.Add(legend11);
+            chartArea2.Name = "ChartArea1";
+            this.FY_Yield_Plot_chart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.FY_Yield_Plot_chart.Legends.Add(legend2);
             this.FY_Yield_Plot_chart.Location = new System.Drawing.Point(39, 1294);
             this.FY_Yield_Plot_chart.Name = "FY_Yield_Plot_chart";
             this.FY_Yield_Plot_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.FY_Yield_Plot_chart.Series.Add(series7);
-            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(764, 541);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.FY_Yield_Plot_chart.Series.Add(series1);
+            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(747, 541);
             this.FY_Yield_Plot_chart.TabIndex = 1;
             this.FY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1707,18 +1763,18 @@
             // 
             this.FPY_Yield_Plot_chart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea12.Name = "ChartArea1";
-            this.FPY_Yield_Plot_chart.ChartAreas.Add(chartArea12);
-            legend12.Name = "Legend1";
-            this.FPY_Yield_Plot_chart.Legends.Add(legend12);
+            chartArea3.Name = "ChartArea1";
+            this.FPY_Yield_Plot_chart.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.FPY_Yield_Plot_chart.Legends.Add(legend3);
             this.FPY_Yield_Plot_chart.Location = new System.Drawing.Point(17, 342);
             this.FPY_Yield_Plot_chart.Name = "FPY_Yield_Plot_chart";
             this.FPY_Yield_Plot_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series8.ChartArea = "ChartArea1";
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            this.FPY_Yield_Plot_chart.Series.Add(series8);
-            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(786, 563);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.FPY_Yield_Plot_chart.Series.Add(series2);
+            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(769, 563);
             this.FPY_Yield_Plot_chart.TabIndex = 1;
             this.FPY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1733,7 +1789,7 @@
             this.FY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 1005);
             this.FY_Yield_Plot_dataGridView.Name = "FY_Yield_Plot_dataGridView";
             this.FY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(767, 266);
+            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(750, 266);
             this.FY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1748,7 +1804,7 @@
             this.FPY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 36);
             this.FPY_Yield_Plot_dataGridView.Name = "FPY_Yield_Plot_dataGridView";
             this.FPY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(767, 260);
+            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(750, 260);
             this.FPY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FPY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1892,59 +1948,16 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // Search_FirstRecord_checkBox
+            // Comp_Already_Removed_checkBox
             // 
-            this.Search_FirstRecord_checkBox.AutoSize = true;
-            this.Search_FirstRecord_checkBox.Enabled = false;
-            this.Search_FirstRecord_checkBox.Location = new System.Drawing.Point(636, 219);
-            this.Search_FirstRecord_checkBox.Name = "Search_FirstRecord_checkBox";
-            this.Search_FirstRecord_checkBox.Size = new System.Drawing.Size(80, 17);
-            this.Search_FirstRecord_checkBox.TabIndex = 85;
-            this.Search_FirstRecord_checkBox.Text = "FirstRecord";
-            this.Search_FirstRecord_checkBox.UseVisualStyleBackColor = true;
-            this.Search_FirstRecord_checkBox.CheckedChanged += new System.EventHandler(this.Search_FirstRecord_checkBox_CheckedChanged);
-            // 
-            // Search_LastRecord_checkBox
-            // 
-            this.Search_LastRecord_checkBox.AutoSize = true;
-            this.Search_LastRecord_checkBox.Enabled = false;
-            this.Search_LastRecord_checkBox.Location = new System.Drawing.Point(636, 242);
-            this.Search_LastRecord_checkBox.Name = "Search_LastRecord_checkBox";
-            this.Search_LastRecord_checkBox.Size = new System.Drawing.Size(81, 17);
-            this.Search_LastRecord_checkBox.TabIndex = 86;
-            this.Search_LastRecord_checkBox.Text = "LastRecord";
-            this.Search_LastRecord_checkBox.UseVisualStyleBackColor = true;
-            this.Search_LastRecord_checkBox.CheckedChanged += new System.EventHandler(this.Search_LastRecord_checkBox_CheckedChanged);
-            // 
-            // Comp_PN_label
-            // 
-            this.Comp_PN_label.AutoSize = true;
-            this.Comp_PN_label.Enabled = false;
-            this.Comp_PN_label.Location = new System.Drawing.Point(20, 186);
-            this.Comp_PN_label.Name = "Comp_PN_label";
-            this.Comp_PN_label.Size = new System.Drawing.Size(55, 13);
-            this.Comp_PN_label.TabIndex = 87;
-            this.Comp_PN_label.Text = "Comp_PN";
-            // 
-            // Comp_PN_textBox
-            // 
-            this.Comp_PN_textBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.Comp_PN_textBox.Enabled = false;
-            this.Comp_PN_textBox.Location = new System.Drawing.Point(90, 183);
-            this.Comp_PN_textBox.Name = "Comp_PN_textBox";
-            this.Comp_PN_textBox.Size = new System.Drawing.Size(91, 20);
-            this.Comp_PN_textBox.TabIndex = 88;
-            // 
-            // Comp_PN_Import_button
-            // 
-            this.Comp_PN_Import_button.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.Comp_PN_Import_button.Enabled = false;
-            this.Comp_PN_Import_button.Location = new System.Drawing.Point(183, 181);
-            this.Comp_PN_Import_button.Name = "Comp_PN_Import_button";
-            this.Comp_PN_Import_button.Size = new System.Drawing.Size(15, 21);
-            this.Comp_PN_Import_button.TabIndex = 89;
-            this.Comp_PN_Import_button.UseVisualStyleBackColor = false;
-            this.Comp_PN_Import_button.Click += new System.EventHandler(this.Comp_PN_Import_button_Click);
+            this.Comp_Already_Removed_checkBox.AutoSize = true;
+            this.Comp_Already_Removed_checkBox.Enabled = false;
+            this.Comp_Already_Removed_checkBox.Location = new System.Drawing.Point(229, 263);
+            this.Comp_Already_Removed_checkBox.Name = "Comp_Already_Removed_checkBox";
+            this.Comp_Already_Removed_checkBox.Size = new System.Drawing.Size(146, 17);
+            this.Comp_Already_Removed_checkBox.TabIndex = 90;
+            this.Comp_Already_Removed_checkBox.Text = "Comp_Already_Removed";
+            this.Comp_Already_Removed_checkBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -2148,6 +2161,7 @@
         private System.Windows.Forms.Button Comp_PN_Import_button;
         private System.Windows.Forms.TextBox Comp_PN_textBox;
         private System.Windows.Forms.Label Comp_PN_label;
+        private System.Windows.Forms.CheckBox Comp_Already_Removed_checkBox;
     }
 }
 

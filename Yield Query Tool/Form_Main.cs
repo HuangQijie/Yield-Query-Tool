@@ -175,7 +175,7 @@ namespace Yield_Query_Tool
                 Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
                 DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel,
                 Comp_SN_textBox.Text.Trim(), Comp_Type_InforLabel.Text.Trim(), Comp_eDataName_comboBox.Text.Trim(), Comp_eData_Value_textBox.Text.Trim(),
-                Comp_eData_Include_checkBox.Checked, Search_Record_Type,Comp_PN_textBox.Text.Trim());
+                Comp_eData_Include_checkBox.Checked, Search_Record_Type,Comp_PN_textBox.Text.Trim(),Comp_Already_Removed_checkBox.Checked);
             SearchDataGridView.DataSource = ds;
             SearchDataGridView.DataMember = ds.Tables[0].TableName;
             //SearchDataGridView = fc.ChangeDataGridColor(SearchDataGridView);
@@ -1059,7 +1059,7 @@ namespace Yield_Query_Tool
                + StartTime.ToString() + "\t" + EndTime.ToString() + "\t" + LSL_Val.Text.Trim() + "\t" + USL_Val.Text.Trim() + "\t" + DateTime.Now.ToString() + "\t" + Comp_SN_textBox.Text.Trim()
                + "\t" + fc.ListBox2SQL_in_Query_String(Comp_Type_listBox).Trim() + "\t" + Comp_eDataName_comboBox.Text.ToString().Trim() + "\t" + Comp_eData_Value_textBox.Text.Trim() + "\t" +
                Test_DB_Enable_checkBox.Checked.ToString() + "\t" + Comp_eData_Include_checkBox.Checked.ToString() + "\t" + Search_FirstRecord_checkBox.Checked.ToString() + "\t" + Search_LastRecord_checkBox.Checked.ToString()+ "\t" +
-               Comp_PN_textBox.Text.Trim());
+               Comp_PN_textBox.Text.Trim() + "\t" +Comp_Already_Removed_checkBox.Checked.ToString());
             Sw.Flush();
             //关闭流
             Sw.Close();
@@ -1135,7 +1135,7 @@ namespace Yield_Query_Tool
                     StreamReader sr = new StreamReader(myStream);
 
                     // Read the stream to a string
-                    line = sr.ReadToEnd();// do NOT use Trim() here
+                    line = sr.ReadToEnd();// DO NOT use Trim() here
 
                     ReadQuryHistory(line);
 
@@ -1189,6 +1189,7 @@ namespace Yield_Query_Tool
             int Search_First_Record_ChecBox_Checked = 23;
             int Search_Last_Record_ChecBox_Checked = 24;
             int Comp_PN = 25;
+            int Comp_Already_Removed_checkBox_Checked = 25;
 
 
             string[] FieldName = QueryHistroyString.Split('\t');
@@ -1232,6 +1233,7 @@ namespace Yield_Query_Tool
             Comp_eData_Include_checkBox.Checked = bool.Parse(FieldName[Comp_eData_Include_checkBox_Checked]);
             Search_FirstRecord_checkBox.Checked = bool.Parse(FieldName[Search_First_Record_ChecBox_Checked]);
             Search_LastRecord_checkBox.Checked = bool.Parse(FieldName[Search_Last_Record_ChecBox_Checked]);
+            Comp_Already_Removed_checkBox.Checked = bool.Parse(FieldName[Comp_Already_Removed_checkBox_Checked]);
 
             YieldEnablecheckBox.Checked = false;
             CPKEnablecheckBox.Checked = false;
@@ -1398,6 +1400,7 @@ namespace Yield_Query_Tool
                 Comp_eDataName_comboBox.Enabled = true;
                 Comp_eDataName_button.Enabled = true;
 
+                Comp_Already_Removed_checkBox.Enabled = true;
 
             }
             else
@@ -1416,6 +1419,8 @@ namespace Yield_Query_Tool
                 Comp_Edata_Name_label.Enabled = false;
                 Comp_eDataName_comboBox.Enabled = false;
                 Comp_eDataName_button.Enabled = false;
+
+                Comp_Already_Removed_checkBox.Enabled = false;
             }
 
 
