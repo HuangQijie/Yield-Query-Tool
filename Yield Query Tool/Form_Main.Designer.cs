@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
             this.Comp_Already_Removed_checkBox = new System.Windows.Forms.CheckBox();
@@ -44,8 +44,6 @@
             this.Comp_PN_Import_button = new System.Windows.Forms.Button();
             this.Comp_PN_textBox = new System.Windows.Forms.TextBox();
             this.Comp_PN_label = new System.Windows.Forms.Label();
-            this.EndTime_HHMMSS_textBox = new System.Windows.Forms.TextBox();
-            this.StartTime_HHMMSS_textBox = new System.Windows.Forms.TextBox();
             this.DataSetName_Import_button = new System.Windows.Forms.Button();
             this.Import_Query_button = new System.Windows.Forms.Button();
             this.Export_Query_button = new System.Windows.Forms.Button();
@@ -246,8 +244,6 @@
             this.MainTab.Controls.Add(this.Comp_PN_Import_button);
             this.MainTab.Controls.Add(this.Comp_PN_textBox);
             this.MainTab.Controls.Add(this.Comp_PN_label);
-            this.MainTab.Controls.Add(this.EndTime_HHMMSS_textBox);
-            this.MainTab.Controls.Add(this.StartTime_HHMMSS_textBox);
             this.MainTab.Controls.Add(this.DataSetName_Import_button);
             this.MainTab.Controls.Add(this.Import_Query_button);
             this.MainTab.Controls.Add(this.Export_Query_button);
@@ -382,24 +378,6 @@
             this.Comp_PN_label.Size = new System.Drawing.Size(55, 13);
             this.Comp_PN_label.TabIndex = 87;
             this.Comp_PN_label.Text = "Comp_PN";
-            // 
-            // EndTime_HHMMSS_textBox
-            // 
-            this.EndTime_HHMMSS_textBox.Location = new System.Drawing.Point(1065, 68);
-            this.EndTime_HHMMSS_textBox.Name = "EndTime_HHMMSS_textBox";
-            this.EndTime_HHMMSS_textBox.Size = new System.Drawing.Size(57, 20);
-            this.EndTime_HHMMSS_textBox.TabIndex = 84;
-            this.EndTime_HHMMSS_textBox.Text = "073000";
-            this.EndTime_HHMMSS_textBox.TextChanged += new System.EventHandler(this.EndTime_HHMMSS_textBox_TextChanged);
-            // 
-            // StartTime_HHMMSS_textBox
-            // 
-            this.StartTime_HHMMSS_textBox.Location = new System.Drawing.Point(1065, 19);
-            this.StartTime_HHMMSS_textBox.Name = "StartTime_HHMMSS_textBox";
-            this.StartTime_HHMMSS_textBox.Size = new System.Drawing.Size(57, 20);
-            this.StartTime_HHMMSS_textBox.TabIndex = 83;
-            this.StartTime_HHMMSS_textBox.Text = "073000";
-            this.StartTime_HHMMSS_textBox.TextChanged += new System.EventHandler(this.StartTime_HHMMSS_textBox_TextChanged);
             // 
             // DataSetName_Import_button
             // 
@@ -924,11 +902,12 @@
             // EndTimePicker
             // 
             this.EndTimePicker.CalendarForeColor = System.Drawing.Color.CornflowerBlue;
-            this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.EndTimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndTimePicker.Location = new System.Drawing.Point(960, 69);
             this.EndTimePicker.MinDate = new System.DateTime(2014, 1, 1, 0, 0, 0, 0);
             this.EndTimePicker.Name = "EndTimePicker";
-            this.EndTimePicker.Size = new System.Drawing.Size(99, 20);
+            this.EndTimePicker.Size = new System.Drawing.Size(150, 20);
             this.EndTimePicker.TabIndex = 18;
             this.EndTimePicker.Value = new System.DateTime(2016, 5, 4, 0, 0, 0, 0);
             this.EndTimePicker.ValueChanged += new System.EventHandler(this.EndTimePicker_ValueChanged);
@@ -945,12 +924,12 @@
             // StartTimePicker
             // 
             this.StartTimePicker.CalendarForeColor = System.Drawing.Color.CornflowerBlue;
-            this.StartTimePicker.CustomFormat = "yyyy-MM-dd HH:mm:ss ";
-            this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.StartTimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss ";
+            this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.StartTimePicker.Location = new System.Drawing.Point(960, 19);
             this.StartTimePicker.MinDate = new System.DateTime(2014, 1, 1, 0, 0, 0, 0);
             this.StartTimePicker.Name = "StartTimePicker";
-            this.StartTimePicker.Size = new System.Drawing.Size(99, 20);
+            this.StartTimePicker.Size = new System.Drawing.Size(150, 20);
             this.StartTimePicker.TabIndex = 16;
             this.StartTimePicker.Value = new System.DateTime(2016, 5, 4, 0, 0, 0, 0);
             this.StartTimePicker.ValueChanged += new System.EventHandler(this.StartTimePicker_ValueChanged);
@@ -1168,7 +1147,7 @@
             // FYResultTableExport
             // 
             this.FYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYResultTableExport.Location = new System.Drawing.Point(1189, 566);
+            this.FYResultTableExport.Location = new System.Drawing.Point(1172, 566);
             this.FYResultTableExport.Name = "FYResultTableExport";
             this.FYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FYResultTableExport.TabIndex = 10;
@@ -1179,7 +1158,7 @@
             // FPYResultTableExport
             // 
             this.FPYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYResultTableExport.Location = new System.Drawing.Point(1189, 12);
+            this.FPYResultTableExport.Location = new System.Drawing.Point(1172, 12);
             this.FPYResultTableExport.Name = "FPYResultTableExport";
             this.FPYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FPYResultTableExport.TabIndex = 9;
@@ -1198,7 +1177,7 @@
             this.FYTabledataGridView.Location = new System.Drawing.Point(9, 598);
             this.FYTabledataGridView.Name = "FYTabledataGridView";
             this.FYTabledataGridView.ReadOnly = true;
-            this.FYTabledataGridView.Size = new System.Drawing.Size(1255, 166);
+            this.FYTabledataGridView.Size = new System.Drawing.Size(1238, 166);
             this.FYTabledataGridView.TabIndex = 8;
             // 
             // FPYTabledataGridView
@@ -1212,13 +1191,13 @@
             this.FPYTabledataGridView.Location = new System.Drawing.Point(9, 43);
             this.FPYTabledataGridView.Name = "FPYTabledataGridView";
             this.FPYTabledataGridView.ReadOnly = true;
-            this.FPYTabledataGridView.Size = new System.Drawing.Size(1255, 166);
+            this.FPYTabledataGridView.Size = new System.Drawing.Size(1238, 166);
             this.FPYTabledataGridView.TabIndex = 8;
             // 
             // FYRawDataExport
             // 
             this.FYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYRawDataExport.Location = new System.Drawing.Point(1189, 768);
+            this.FYRawDataExport.Location = new System.Drawing.Point(1172, 768);
             this.FYRawDataExport.Name = "FYRawDataExport";
             this.FYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FYRawDataExport.TabIndex = 7;
@@ -1229,7 +1208,7 @@
             // FPYRawDataExport
             // 
             this.FPYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYRawDataExport.Location = new System.Drawing.Point(1189, 215);
+            this.FPYRawDataExport.Location = new System.Drawing.Point(1172, 215);
             this.FPYRawDataExport.Name = "FPYRawDataExport";
             this.FPYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FPYRawDataExport.TabIndex = 7;
@@ -1267,7 +1246,7 @@
             this.FYRawdataGridView.Location = new System.Drawing.Point(9, 805);
             this.FYRawdataGridView.Name = "FYRawdataGridView";
             this.FYRawdataGridView.ReadOnly = true;
-            this.FYRawdataGridView.Size = new System.Drawing.Size(1255, 316);
+            this.FYRawdataGridView.Size = new System.Drawing.Size(1238, 316);
             this.FYRawdataGridView.TabIndex = 5;
             this.FYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1282,7 +1261,7 @@
             this.FPYRawdataGridView.Location = new System.Drawing.Point(9, 254);
             this.FPYRawdataGridView.Name = "FPYRawdataGridView";
             this.FPYRawdataGridView.ReadOnly = true;
-            this.FPYRawdataGridView.Size = new System.Drawing.Size(1255, 304);
+            this.FPYRawdataGridView.Size = new System.Drawing.Size(1238, 304);
             this.FPYRawdataGridView.TabIndex = 4;
             this.FPYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1322,10 +1301,10 @@
             // 
             // CPKChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.CPKChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.CPKChart.Legends.Add(legend1);
+            chartArea10.Name = "ChartArea1";
+            this.CPKChart.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.CPKChart.Legends.Add(legend10);
             this.CPKChart.Location = new System.Drawing.Point(6, 191);
             this.CPKChart.Name = "CPKChart";
             this.CPKChart.Size = new System.Drawing.Size(1275, 333);
@@ -1442,11 +1421,12 @@
             // dateTimePicker_ERCPK_End
             // 
             this.dateTimePicker_ERCPK_End.CalendarForeColor = System.Drawing.Color.CornflowerBlue;
-            this.dateTimePicker_ERCPK_End.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker_ERCPK_End.CustomFormat = "yyyy/MM/dd HH:mm:ss ";
+            this.dateTimePicker_ERCPK_End.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker_ERCPK_End.Location = new System.Drawing.Point(643, 58);
             this.dateTimePicker_ERCPK_End.MinDate = new System.DateTime(2014, 1, 1, 0, 0, 0, 0);
             this.dateTimePicker_ERCPK_End.Name = "dateTimePicker_ERCPK_End";
-            this.dateTimePicker_ERCPK_End.Size = new System.Drawing.Size(99, 20);
+            this.dateTimePicker_ERCPK_End.Size = new System.Drawing.Size(129, 20);
             this.dateTimePicker_ERCPK_End.TabIndex = 44;
             this.dateTimePicker_ERCPK_End.Value = new System.DateTime(2016, 5, 4, 0, 0, 0, 0);
             this.dateTimePicker_ERCPK_End.ValueChanged += new System.EventHandler(this.dateTimePicker_ERCPK_End_ValueChanged);
@@ -1463,12 +1443,12 @@
             // dateTimePicker_ERCPK_Start
             // 
             this.dateTimePicker_ERCPK_Start.CalendarForeColor = System.Drawing.Color.CornflowerBlue;
-            this.dateTimePicker_ERCPK_Start.CustomFormat = "yyyy-MM-dd HH:mm:ss ";
-            this.dateTimePicker_ERCPK_Start.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker_ERCPK_Start.CustomFormat = "yyyy/MM/dd HH:mm:ss ";
+            this.dateTimePicker_ERCPK_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker_ERCPK_Start.Location = new System.Drawing.Point(643, 10);
             this.dateTimePicker_ERCPK_Start.MinDate = new System.DateTime(2014, 1, 1, 0, 0, 0, 0);
             this.dateTimePicker_ERCPK_Start.Name = "dateTimePicker_ERCPK_Start";
-            this.dateTimePicker_ERCPK_Start.Size = new System.Drawing.Size(99, 20);
+            this.dateTimePicker_ERCPK_Start.Size = new System.Drawing.Size(129, 20);
             this.dateTimePicker_ERCPK_Start.TabIndex = 42;
             this.dateTimePicker_ERCPK_Start.Value = new System.DateTime(2016, 5, 4, 0, 0, 0, 0);
             this.dateTimePicker_ERCPK_Start.ValueChanged += new System.EventHandler(this.dateTimePicker_ERCPK_Start_ValueChanged);
@@ -1723,7 +1703,7 @@
             // FY_Plot_Export_button
             // 
             this.FY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Plot_Export_button.Location = new System.Drawing.Point(1176, 1277);
+            this.FY_Plot_Export_button.Location = new System.Drawing.Point(1159, 1277);
             this.FY_Plot_Export_button.Name = "FY_Plot_Export_button";
             this.FY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Plot_Export_button.TabIndex = 5;
@@ -1734,7 +1714,7 @@
             // FPY_Plot_Export_button
             // 
             this.FPY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(1176, 321);
+            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(1159, 321);
             this.FPY_Plot_Export_button.Name = "FPY_Plot_Export_button";
             this.FPY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Plot_Export_button.TabIndex = 4;
@@ -1745,7 +1725,7 @@
             // FY_Yield_Plot_data_button
             // 
             this.FY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(1176, 964);
+            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(1159, 964);
             this.FY_Yield_Plot_data_button.Name = "FY_Yield_Plot_data_button";
             this.FY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Yield_Plot_data_button.TabIndex = 3;
@@ -1756,7 +1736,7 @@
             // FPY_Yield_Plot_data_button
             // 
             this.FPY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(1176, 7);
+            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(1159, 7);
             this.FPY_Yield_Plot_data_button.Name = "FPY_Yield_Plot_data_button";
             this.FPY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Yield_Plot_data_button.TabIndex = 2;
@@ -1768,18 +1748,18 @@
             // 
             this.FY_Yield_Plot_chart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.FY_Yield_Plot_chart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.FY_Yield_Plot_chart.Legends.Add(legend2);
+            chartArea11.Name = "ChartArea1";
+            this.FY_Yield_Plot_chart.ChartAreas.Add(chartArea11);
+            legend11.Name = "Legend1";
+            this.FY_Yield_Plot_chart.Legends.Add(legend11);
             this.FY_Yield_Plot_chart.Location = new System.Drawing.Point(39, 1294);
             this.FY_Yield_Plot_chart.Name = "FY_Yield_Plot_chart";
             this.FY_Yield_Plot_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.FY_Yield_Plot_chart.Series.Add(series1);
-            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(1212, 541);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.FY_Yield_Plot_chart.Series.Add(series7);
+            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(1195, 541);
             this.FY_Yield_Plot_chart.TabIndex = 1;
             this.FY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1787,18 +1767,18 @@
             // 
             this.FPY_Yield_Plot_chart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.FPY_Yield_Plot_chart.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.FPY_Yield_Plot_chart.Legends.Add(legend3);
+            chartArea12.Name = "ChartArea1";
+            this.FPY_Yield_Plot_chart.ChartAreas.Add(chartArea12);
+            legend12.Name = "Legend1";
+            this.FPY_Yield_Plot_chart.Legends.Add(legend12);
             this.FPY_Yield_Plot_chart.Location = new System.Drawing.Point(17, 342);
             this.FPY_Yield_Plot_chart.Name = "FPY_Yield_Plot_chart";
             this.FPY_Yield_Plot_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.FPY_Yield_Plot_chart.Series.Add(series2);
-            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(1234, 563);
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.FPY_Yield_Plot_chart.Series.Add(series8);
+            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(1217, 563);
             this.FPY_Yield_Plot_chart.TabIndex = 1;
             this.FPY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1813,7 +1793,7 @@
             this.FY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 1005);
             this.FY_Yield_Plot_dataGridView.Name = "FY_Yield_Plot_dataGridView";
             this.FY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1234, 266);
+            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1217, 266);
             this.FY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1828,7 +1808,7 @@
             this.FPY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 36);
             this.FPY_Yield_Plot_dataGridView.Name = "FPY_Yield_Plot_dataGridView";
             this.FPY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1234, 260);
+            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1217, 260);
             this.FPY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FPY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -2167,8 +2147,6 @@
         private System.Windows.Forms.Button Export_Query_button;
         private System.Windows.Forms.Button DataSetName_Import_button;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
-        private System.Windows.Forms.TextBox EndTime_HHMMSS_textBox;
-        private System.Windows.Forms.TextBox StartTime_HHMMSS_textBox;
         private System.Windows.Forms.CheckBox Search_LastRecord_checkBox;
         private System.Windows.Forms.CheckBox Search_FirstRecord_checkBox;
         private System.Windows.Forms.Button Comp_PN_Import_button;

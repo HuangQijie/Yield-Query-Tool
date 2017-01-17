@@ -55,13 +55,13 @@ namespace Yield_Query_Tool
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            StartTime = fc.TimePickerFormat(StartTimePicker, StartTime_HHMMSS_textBox.Text);
+            StartTime = fc.TimePickerFormat(StartTimePicker);
 
         }
 
         private void EndTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            EndTime = fc.TimePickerFormat(EndTimePicker, EndTime_HHMMSS_textBox.Text);
+            EndTime = fc.TimePickerFormat(EndTimePicker);
         }
 
 
@@ -608,13 +608,13 @@ namespace Yield_Query_Tool
         //This section is for ER CPK used only
         private void dateTimePicker_ERCPK_Start_ValueChanged(object sender, EventArgs e)
         {
-            StartTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_Start, "073000");
+            StartTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_Start);
 
         }
 
         private void dateTimePicker_ERCPK_End_ValueChanged(object sender, EventArgs e)
         {
-            EndTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_End, "073000");
+            EndTime_ERCPK = fc.TimePickerFormat(dateTimePicker_ERCPK_End);
         }
 
         private void ER_CPK_button_Click(object sender, EventArgs e)
@@ -1218,8 +1218,8 @@ namespace Yield_Query_Tool
 
             StartTimePicker.Value = DateTime.ParseExact(FieldName[Start_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
             EndTimePicker.Value = DateTime.ParseExact(FieldName[End_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
-            StartTime_HHMMSS_textBox.Text = FieldName[Start_Time].Substring(8, FieldName[Start_Time].Length - 8);
-            EndTime_HHMMSS_textBox.Text = FieldName[End_Time].Substring(8, FieldName[End_Time].Length - 8);
+            //StartTime_HHMMSS_textBox.Text = FieldName[Start_Time].Substring(8, FieldName[Start_Time].Length - 8);
+            //EndTime_HHMMSS_textBox.Text = FieldName[End_Time].Substring(8, FieldName[End_Time].Length - 8);
 
             LSL_Val.Text = FieldName[LSL_Value];
             USL_Val.Text = FieldName[USL_Value];
@@ -1496,15 +1496,7 @@ namespace Yield_Query_Tool
             //Selected_Dataset_InforLabel.ForeColor = System.Drawing.Color.Blue;
         }
 
-        private void StartTime_HHMMSS_textBox_TextChanged(object sender, EventArgs e)
-        {
-            StartTime = fc.TimePickerFormat(StartTimePicker, StartTime_HHMMSS_textBox.Text);
-        }
-
-        private void EndTime_HHMMSS_textBox_TextChanged(object sender, EventArgs e)
-        {
-            EndTime = fc.TimePickerFormat(EndTimePicker, EndTime_HHMMSS_textBox.Text);
-        }
+        
 
         private void Search_FirstRecord_checkBox_CheckedChanged(object sender, EventArgs e)
         {

@@ -655,13 +655,13 @@ namespace Yield_Query_Tool
 
 
 
-        public string TimePickerFormat(DateTimePicker datetime, string HHMMSS)
+        public string TimePickerFormat(DateTimePicker datetime)
         {
-            string yyyymmdd073000;
+            string yyyymmddHHmmss;
             //datetime.Format=DateTimePickerFormat.Custom;
             //datetime.CustomFormat="yyyyMMdd";
-            yyyymmdd073000 = datetime.Value.ToString("yyyyMMdd") + HHMMSS;
-            return yyyymmdd073000;
+            yyyymmddHHmmss = datetime.Value.ToString("yyyyMMddHHmmss");
+            return yyyymmddHHmmss;
 
         }
 
@@ -669,8 +669,13 @@ namespace Yield_Query_Tool
         {// pcik up now time as default starttimepicker and endtime picker
             //StartTime.Format = DateTimePickerFormat.Long;
             //StartTime.ShowUpDown = true;
-            StartTime.Text = DateTime.Now.ToString();
-            EndTime.Text = DateTime.Now.ToString();
+            var date = DateTime.Now.Date.Add(new TimeSpan(8, 0, 0));
+
+
+            StartTime.Text = date.ToString();
+            EndTime.Text = date.ToString();
+            
+
         }
 
 
