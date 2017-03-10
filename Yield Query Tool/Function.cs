@@ -117,6 +117,9 @@ namespace Yield_Query_Tool
             Comp_Type_listBox.Items.Add("laserSN");
             Comp_Type_listBox.Items.Add("PWBA");
             Comp_Type_listBox.Items.Add("receiverSN");
+
+            Comp_Type_listBox.Items.Add("ROSA");
+            Comp_Type_listBox.Items.Add("TOSA");
         }
 
         public void DataSetChangeWithStep(string dbPath, ListBox Step_listBox, ListBox DataSet_listBox, ComboBox DataName)
@@ -449,7 +452,7 @@ namespace Yield_Query_Tool
         public DataSet MainOracleQuery(string connectionstring, string SerialNumber, string JobOrder,
                     string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataName, string DataNameVal,
                     string DataSetStatus, string DataStatus, string StartTime, string EndTime, Label InformLabel, string Comp_SN, string Comp_Type,
-            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type, string Comp_PN, 
+            string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type, string Comp_PN,
             bool Comp_Already_Removed_checkBox_Checked)
         {
             if (Comp_eData_Include_checkBox_Checked)
@@ -674,7 +677,7 @@ namespace Yield_Query_Tool
 
             StartTime.Text = date.ToString();
             EndTime.Text = date.ToString();
-            
+
 
         }
 
@@ -2169,7 +2172,7 @@ namespace Yield_Query_Tool
             Yield_Plot_Table.Columns.Add("ModelID");
             Yield_Plot_Table.Columns.Add("DataSet");
             Yield_Plot_Table.Columns.Add("Pass Quantity");
-            Yield_Plot_Table.Columns.Add("Fatl Quantity");
+            Yield_Plot_Table.Columns.Add("Fail Quantity");
             Yield_Plot_Table.Columns.Add("Ratio");
             Yield_Plot_Table.Columns.Add("Week Number");
             Yield_Plot_Table.Columns.Add("Start Time");
@@ -2547,7 +2550,7 @@ namespace Yield_Query_Tool
             DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
             //DateTime date1 = new DateTime(2011, 1, 1);
             Calendar cal = dfi.Calendar;
-            string i = cal.GetWeekOfYear(DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek).ToString();
+            string i = DateTime.Year.ToString().Substring(2, 2) + cal.GetWeekOfYear(DateTime, dfi.CalendarWeekRule, dfi.FirstDayOfWeek).ToString("00");
             // cal.ToString().Substring(cal.ToString().LastIndexOf(".") + 1));       
             return i;
 
@@ -2732,6 +2735,7 @@ namespace Yield_Query_Tool
             //ds.Dispose();
             try
             {
+                //This is for tunable 10G log file, txt file name is end with _S1
                 string temp1 = "\\\\" + ComputerName + "\\testfiles\\" + SerialNumber + "_S1.txt";
                 string temp2 = System.AppDomain.CurrentDomain.BaseDirectory + "testfiles\\" + StationName + "_" + SerialNumber + "_S1.txt";
                 File.Copy(temp1, temp2, true);//Copy the log txe file to local folder
@@ -2739,9 +2743,21 @@ namespace Yield_Query_Tool
                 Process.Start(temp2);//Open the txt file
             }
 
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show("Maybe Access of " + ComputerName + " is Denied?\n" + e.ToString());
+                try
+                {
+                    //This is for CFP2 100G log file, txt file name is end with _S0
+                    string temp1 = "\\\\" + ComputerName + "\\testfiles\\" + SerialNumber + "_S0.txt";
+                    string temp2 = System.AppDomain.CurrentDomain.BaseDirectory + "testfiles\\" + StationName + "_" + SerialNumber + "_S0.txt";
+                    File.Copy(temp1, temp2, true);//Copy the log txe file to local folder
+                    //File.Open(temp2,FileMode.Open,FileAccess.ReadWrite);
+                    Process.Start(temp2);//Open the txt file
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Maybe Access of " + ComputerName + " is Denied?\n" + e.ToString());
+                }
             }
 
 
@@ -2830,7 +2846,7 @@ namespace Yield_Query_Tool
             int DataSetStatus = 7;
             int DataSetEndtime = 8;
             int DataName = 9;
-  
+
 
             int Flag = FPYRawData.Columns.Count + 1;
 
@@ -2855,9 +2871,9 @@ namespace Yield_Query_Tool
                     if (FPYRawData.Rows[j][SN - 1].ToString() == tempSN &&
                         FPYRawData.Rows[j][BOMPN - 1].ToString() == tempBOMPN &&
                         FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev &&
-                        FPYRawData.Rows[j][DataSetName - 1].ToString() == tempdatasetname&&
+                        FPYRawData.Rows[j][DataSetName - 1].ToString() == tempdatasetname &&
                         FPYRawData.Rows[j][DataName - 1].ToString() == tempDataName)
-                        FPYRawData.Rows[j][Flag-1]="Del";
+                        FPYRawData.Rows[j][Flag - 1] = "Del";
 
 
                 }
@@ -2874,7 +2890,7 @@ namespace Yield_Query_Tool
             }
 
             FPYRawData.AcceptChanges();
-         
+
 
 
 
@@ -2892,7 +2908,50 @@ namespace Yield_Query_Tool
         }
 
 
+        public DataSet WIP_Status_Search(string connectionstring, string JobID)
+        {
+            DataSet ds;
 
+            
+            //This sql process is as below:
+            //1. Pull out all SN according to Input Job ID list
+            //2. Pull out the latest ROUTE_ID whose SN is in SN list of above step ---MAX(b.ROUTE_ID)
+            //3. Pull out the all needed information according to ROUTE_ID in ROUTE_ID list of above step AND Job_ID in Input Job_ID list 
+            //4. In summary, job ID--> SN--> Latest Route ID--> JobID & Latest Route ID 
+            string sql = " SELECT a.MFR_SN,  f.BOM_PN,  f.BOM_PN_REV,  f.MODEL_ID,  f.LIFECYCLE,  b.JOB_ID,  b.STATE,  b.STATUS,  b.ROUTE_ID,  f.TIME " +
+" FROM PARTS a INNER JOIN ROUTES b ON a.OPT_INDEX = b.PART_INDEX INNER JOIN BOM_CONTEXT_ID f ON f.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID " +
+" WHERE b.JOB_ID     Replace_JobID_Here " +
+" AND b.ROUTE_ID     IN  (SELECT ROUTE_ID   FROM     (SELECT a.MFR_SN,       MAX(b.ROUTE_ID) AS ROUTE_ID    FROM PARTS a " +
+" INNER JOIN ROUTES b    ON a.OPT_INDEX  = b.PART_INDEX    WHERE a.MFR_SN IN " +
+     " (SELECT a.MFR_SN      FROM PARTS a      INNER JOIN ROUTES b      ON a.OPT_INDEX  = b.PART_INDEX " +
+     " WHERE b.JOB_ID  Replace_JobID_Here )" +
+         "GROUP BY a.MFR_SN    )  )";
+
+            if (JobID.Length != 0)
+            {
+
+                JobID = JobID.Replace(",", "','");
+                string temp = " in ('" + JobID + "')";
+                sql=sql.Replace("Replace_JobID_Here", temp);
+
+                //sql += " order by a.MFR_SN, f.time DESC";
+
+                ds = GetOracleDataSet2(connectionstring, sql);
+
+                
+
+                return ds;
+
+
+            }
+
+            else
+            {
+                MessageBox.Show("Please input JobID");
+                return null;
+            }
+
+        }
 
 
 

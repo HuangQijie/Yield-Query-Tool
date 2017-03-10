@@ -31,7 +31,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "4.2";
+        public string SWVersion = "4.3";
 
         //
 
@@ -120,6 +120,7 @@ namespace Yield_Query_Tool
             Dataset_Testtime_tab.Parent = null;
             Yield_Plot_Tab.Parent = null;
             Component_Edata_Tab.Parent = null;
+            WIP_Status_tabPage.Parent = null;
 
             Selected_Step_InforLabel.ForeColor = System.Drawing.Color.Blue;
             Selected_Dataset_InforLabel.ForeColor = System.Drawing.Color.Blue;
@@ -1453,6 +1454,9 @@ namespace Yield_Query_Tool
                 Comp_eData_Include_checkBox.Checked = false;
                 Search_FirstRecord_checkBox.Enabled = false;
                 Search_LastRecord_checkBox.Enabled = false;
+                // if Search_ checkbox is unchecked, then search fisrt or search last checkbox should be unchecked as well
+                Search_FirstRecord_checkBox.Checked = false;
+                Search_LastRecord_checkBox.Checked = false;
 
 
             }
@@ -1519,6 +1523,49 @@ namespace Yield_Query_Tool
         private void WhereUsed_dataGridView_Export_button_Click(object sender, EventArgs e)
         {
             fc.DataGridViewToExcel(WhereUsed_dataGridView);
+        }
+
+        private void WIP_Status_JobID_Import_button_Click(object sender, EventArgs e)
+        {
+            WIP_Status_JobID_textBox.Text = fc.ReadListFromTxt();
+            
+        }
+
+        private void WIP_Status_Export_button_Click(object sender, EventArgs e)
+        {
+            fc.DataGridViewToExcel(WIP_Status_dataGridView);
+        }
+
+        private void WIP_Status_Search_button_Click(object sender, EventArgs e)
+        {
+
+            WIP_Status_Infor_label.Text = "Searching...";
+            WIP_Status_Infor_label.ForeColor = System.Drawing.Color.Red;
+            Application.DoEvents();
+            DataSet ds;
+
+            ds = fc.WIP_Status_Search(OracleConnectString, WIP_Status_JobID_textBox.Text.Trim());
+
+
+            WIP_Status_dataGridView.DataSource = ds;
+
+            WIP_Status_dataGridView.DataMember = ds.Tables[0].TableName;
+
+            WIP_Status_Infor_label.ForeColor = System.Drawing.Color.Black;
+            int ContainerNumber = fc.ContainerNumberCounter(ds.Tables[0]);
+            WIP_Status_Infor_label.Text = "Find total " + ds.Tables[0].Rows.Count + " recorders...The active container number is " + ContainerNumber.ToString();
+
+        }
+
+        private void WIP_Status_Enable_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (WIP_Status_Enable_checkBox.Checked)
+
+
+                WIP_Status_tabPage.Parent = MainTabControl;
+            else
+                WIP_Status_tabPage.Parent = null;
         }
 
 
