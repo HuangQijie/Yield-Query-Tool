@@ -31,7 +31,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "4.3";
+        public string SWVersion = "4.4";
 
         //
 
