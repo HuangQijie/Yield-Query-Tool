@@ -2325,12 +2325,14 @@ namespace Yield_Query_Tool
                                     string combineStr = "";
                                     if (rawdata.Rows[k][DataName - 1].ToString() == "failed")
                                     {
-                                        string[] tempArray = rawdata.Rows[k][DataValue - 1].ToString().Split(' ');
+                                        string[] tempArray = rawdata.Rows[k][DataValue - 1].ToString().Split(' ',';');
 
                                         for (var xx = 0; xx < tempArray.Length; xx = xx + 2)
                                             combineStr = combineStr + " " + tempArray[xx];
-                                        // if dataname is failed, usually it appear like final_tx-rm 18554477 final_rx-rm 18554547 final_ber_p1440-rm 18554548 final_ber_btob-rm 18554549 
+                                        // if dataname is failed, in tunable 10G product, usually it appear like final_tx-rm 18554477 final_rx-rm 18554547 final_ber_p1440-rm 18554548 final_ber_btob-rm 18554549 
                                         // The number is refer to dataset ID which have affection on failure mode statistics, so only dataset name is pull out into failure mode.
+                                        // if dataname is failed, in coherent 100G ACO product, usually it appear like mca_test_mca-nn 23836320;mca_test_temp_mca-cn 23837462
+                                        // The number together with ";" is not need to pull out into report table
 
                                     }
                                     else
