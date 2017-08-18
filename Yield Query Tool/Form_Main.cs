@@ -31,7 +31,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "4.4";
+        public string SWVersion = "4.5";
 
         //
 
@@ -176,7 +176,7 @@ namespace Yield_Query_Tool
                 Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
                 DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel,
                 Comp_SN_textBox.Text.Trim(), Comp_Type_InforLabel.Text.Trim(), Comp_eDataName_comboBox.Text.Trim(), Comp_eData_Value_textBox.Text.Trim(),
-                Comp_eData_Include_checkBox.Checked, Search_Record_Type,Comp_PN_textBox.Text.Trim(),Comp_Already_Removed_checkBox.Checked);
+                Comp_eData_Include_checkBox.Checked, Search_Record_Type, Comp_PN_textBox.Text.Trim(), Comp_Already_Removed_checkBox.Checked, checkBox_Ignore_PNRev.Checked);
             SearchDataGridView.DataSource = ds;
             SearchDataGridView.DataMember = ds.Tables[0].TableName;
             //SearchDataGridView = fc.ChangeDataGridColor(SearchDataGridView);
@@ -675,9 +675,11 @@ namespace Yield_Query_Tool
             DataSet ds;
 
             ds = fc.WhereUsedOracleQuery(OracleConnectString, AlreadyRemoved_checkBox_Yes.Checked, SN_WhereUsed.Text.Trim());
-
-            WhereUsed_dataGridView.DataSource = ds;
-            WhereUsed_dataGridView.DataMember = ds.Tables[0].TableName;
+            if (ds != null)
+            {
+                WhereUsed_dataGridView.DataSource = ds;
+                WhereUsed_dataGridView.DataMember = ds.Tables[0].TableName;
+            }
         }
 
         private void WhereUsedQuerycheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1001,14 +1003,14 @@ namespace Yield_Query_Tool
 
         private void Logger(string QueryType)
         {
-            string LogFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "Log.txt";
+            string LogFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "Log_" + SWVersion + ".txt";
             string LogHeadLine = "Qurey_Type\tSN\tJO#\tBOM_PN\tRev\tModel_ID\tStep\tDataSet\tDataSet_Status\tDataName\tData_Status\tDataVal\tStart_Time\tEnd_Time\tLSL\tUSL\tQuery_Time\t"
                 + "Component_SN\tComponent_Type\tComponent_Edata_Name\tComponent_Edata_Value\tTest_DB_Checked\tComp_eData_Checked\tSearch_First_Record_Checked\tSearch_Last_Record_Checked"
-                + "\tComponent_PN";
+                + "\tComponent_PN" + "\tComponent_AlreadyRemoved_Checked" + "\tIgnore_PNRev_Checked";
 
             if (File.Exists(LogFilePath) == false)
             {
-                //不存在文件 或者存在文件，则对比文件首行LogHeadLine,如果不一致,则删除txt所有内容，然后新增首行LogHeadLine
+                //不存在文件
                 //File.Create(LogFilePath);//创建该文件
                 FileStream fs = new FileStream(LogFilePath, FileMode.Create);
                 StreamWriter sw = new StreamWriter(fs);
@@ -1028,7 +1030,7 @@ namespace Yield_Query_Tool
             }
             else
             {
-                //存在文件，则对比文件首行LogHeadLine,如果不一致,则删除txt所有内容，然后新增首行LogHeadLine
+                //存在文件，则对比文件首行LogHeadLine,如果不一致,则新增首行为LogHeadLine的TXT并且覆盖之
                 FileStream fs = new FileStream(LogFilePath, FileMode.Open);
                 StreamReader sr = new StreamReader(fs);
 
@@ -1048,7 +1050,6 @@ namespace Yield_Query_Tool
                 sr.Close();
 
 
-
             }
 
 
@@ -1059,8 +1060,8 @@ namespace Yield_Query_Tool
                 fc.ListBox2SQL_in_Query_String(DataSet_listBox).Trim() + "\t" + DataSetStatus.Text.Trim() + "\t" + DataName.Text.Trim() + "\t" + DataNameStatus.Text.Trim() + "\t" + DataNameVal.Text.Trim() + "\t"
                + StartTime.ToString() + "\t" + EndTime.ToString() + "\t" + LSL_Val.Text.Trim() + "\t" + USL_Val.Text.Trim() + "\t" + DateTime.Now.ToString() + "\t" + Comp_SN_textBox.Text.Trim()
                + "\t" + fc.ListBox2SQL_in_Query_String(Comp_Type_listBox).Trim() + "\t" + Comp_eDataName_comboBox.Text.ToString().Trim() + "\t" + Comp_eData_Value_textBox.Text.Trim() + "\t" +
-               Test_DB_Enable_checkBox.Checked.ToString() + "\t" + Comp_eData_Include_checkBox.Checked.ToString() + "\t" + Search_FirstRecord_checkBox.Checked.ToString() + "\t" + Search_LastRecord_checkBox.Checked.ToString()+ "\t" +
-               Comp_PN_textBox.Text.Trim() + "\t" +Comp_Already_Removed_checkBox.Checked.ToString());
+               Test_DB_Enable_checkBox.Checked.ToString() + "\t" + Comp_eData_Include_checkBox.Checked.ToString() + "\t" + Search_FirstRecord_checkBox.Checked.ToString() + "\t" + Search_LastRecord_checkBox.Checked.ToString() + "\t" +
+               Comp_PN_textBox.Text.Trim() + "\t" + Comp_Already_Removed_checkBox.Checked.ToString() + "\t" + checkBox_Ignore_PNRev.Checked.ToString());
             Sw.Flush();
             //关闭流
             Sw.Close();
@@ -1069,7 +1070,7 @@ namespace Yield_Query_Tool
         }
         private void Export_Query_button_Click(object sender, EventArgs e)
         {
-            string LogFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "Log.txt";
+            string LogFilePath = System.AppDomain.CurrentDomain.BaseDirectory + "Log_" + SWVersion + ".txt"; ;
 
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Filter = "TXT files (*.txt)|*.txt";
@@ -1107,7 +1108,7 @@ namespace Yield_Query_Tool
                 }
                 finally
                 {
-                    
+
                     sw.Close();
                     myStream.Close();
                 }
@@ -1152,7 +1153,7 @@ namespace Yield_Query_Tool
                 catch (Exception exxxxxx)
                 {
                     MessageBox.Show("The file could not be read:\n" + exxxxxx.Message);
-                
+
                     dlg.Dispose();
                 }
 
@@ -1191,6 +1192,7 @@ namespace Yield_Query_Tool
             int Search_Last_Record_ChecBox_Checked = 24;
             int Comp_PN = 25;
             int Comp_Already_Removed_checkBox_Checked = 26;
+            int Ignore_PN_Rev_Checked = 27;
 
 
             string[] FieldName = QueryHistroyString.Split('\t');
@@ -1235,6 +1237,7 @@ namespace Yield_Query_Tool
             Search_FirstRecord_checkBox.Checked = bool.Parse(FieldName[Search_First_Record_ChecBox_Checked]);
             Search_LastRecord_checkBox.Checked = bool.Parse(FieldName[Search_Last_Record_ChecBox_Checked]);
             Comp_Already_Removed_checkBox.Checked = bool.Parse(FieldName[Comp_Already_Removed_checkBox_Checked]);
+            checkBox_Ignore_PNRev.Checked = bool.Parse(FieldName[Ignore_PN_Rev_Checked]);
 
             YieldEnablecheckBox.Checked = false;
             CPKEnablecheckBox.Checked = false;
@@ -1255,7 +1258,7 @@ namespace Yield_Query_Tool
 
 
 
-            
+
 
 
 
@@ -1500,19 +1503,34 @@ namespace Yield_Query_Tool
             //Selected_Dataset_InforLabel.ForeColor = System.Drawing.Color.Blue;
         }
 
-        
+
 
         private void Search_FirstRecord_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (Search_FirstRecord_checkBox.Checked)
+            {
                 Search_LastRecord_checkBox.Checked = false;
-
+                checkBox_Ignore_PNRev.Enabled = true;
+            }
+            else
+            {
+                checkBox_Ignore_PNRev.Checked = false;
+                checkBox_Ignore_PNRev.Enabled = false;
+            }
         }
 
         private void Search_LastRecord_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (Search_LastRecord_checkBox.Checked)
+            {
                 Search_FirstRecord_checkBox.Checked = false;
+                checkBox_Ignore_PNRev.Enabled = true;
+            }
+            else
+            {
+                checkBox_Ignore_PNRev.Checked = false;
+                checkBox_Ignore_PNRev.Enabled = false;
+            }
         }
 
         private void Comp_PN_Import_button_Click(object sender, EventArgs e)
@@ -1528,7 +1546,7 @@ namespace Yield_Query_Tool
         private void WIP_Status_JobID_Import_button_Click(object sender, EventArgs e)
         {
             WIP_Status_JobID_textBox.Text = fc.ReadListFromTxt();
-            
+
         }
 
         private void WIP_Status_Export_button_Click(object sender, EventArgs e)

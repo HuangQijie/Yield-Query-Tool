@@ -453,7 +453,7 @@ namespace Yield_Query_Tool
                     string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataName, string DataNameVal,
                     string DataSetStatus, string DataStatus, string StartTime, string EndTime, Label InformLabel, string Comp_SN, string Comp_Type,
             string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type, string Comp_PN,
-            bool Comp_Already_Removed_checkBox_Checked)
+            bool Comp_Already_Removed_checkBox_Checked,bool Ignore_PN_Rev)
         {
             if (Comp_eData_Include_checkBox_Checked)
             {
@@ -649,7 +649,7 @@ namespace Yield_Query_Tool
             //ds = oracledbo.GetOracleDataSet2(sql, OracleConn);
             ds = GetOracleDataSet2(connectionstring, sql);
             if (Search_Record_Type == "FirstRecord" || Search_Record_Type == "LastRecord")
-                ds = RemoveDuplicateRows(ds.Tables[0]);
+                ds = RemoveDuplicateRows(ds.Tables[0], Ignore_PN_Rev);
 
             //oracledbo.OracleConnectionClose();
             //OracleConn.Close();
@@ -1309,8 +1309,20 @@ namespace Yield_Query_Tool
 
 
             }
-            line = line.Replace(" ", "");//去除空格
+            line = line.Trim();//去除首尾空格
+            line = line.Replace("\t", "");//去除制表符
             line = line.Replace("\r\n", ",");//回车替换为逗号
+
+            ///替换空格+逗号，这样保留字段内部的空格，同时删除逗号和字符之间的多余空格
+            string templine;
+            do
+            {
+                templine = line;
+                line = line.Replace(" ,", ",");
+            }
+
+            while (line != templine);
+            ///
             return line;
 
 
@@ -2247,7 +2259,7 @@ namespace Yield_Query_Tool
                     string combineStr = "";
                     if (rawdata.Rows[i][DataName - 1].ToString() == "failed")
                     {
-                        string[] tempArray = rawdata.Rows[i][DataValue - 1].ToString().Split(' ',';');
+                        string[] tempArray = rawdata.Rows[i][DataValue - 1].ToString().Split(' ', ';');
 
                         for (var xx = 0; xx < tempArray.Length; xx = xx + 2)
                             combineStr = combineStr + " " + tempArray[xx];
@@ -2326,7 +2338,7 @@ namespace Yield_Query_Tool
                                     string combineStr = "";
                                     if (rawdata.Rows[k][DataName - 1].ToString() == "failed")
                                     {
-                                        string[] tempArray = rawdata.Rows[k][DataValue - 1].ToString().Split(' ',';');
+                                        string[] tempArray = rawdata.Rows[k][DataValue - 1].ToString().Split(' ', ';');
 
                                         for (var xx = 0; xx < tempArray.Length; xx = xx + 2)
                                             combineStr = combineStr + " " + tempArray[xx];
@@ -2830,7 +2842,7 @@ namespace Yield_Query_Tool
 
 
 
-        public DataSet RemoveDuplicateRows(DataTable FPYRawData)
+        public DataSet RemoveDuplicateRows(DataTable FPYRawData, bool Ignor_PN_Rev)
         {
 
             //"SELECT a.MFR_SN AS Module_SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev," +
@@ -2873,7 +2885,7 @@ namespace Yield_Query_Tool
                 {
                     if (FPYRawData.Rows[j][SN - 1].ToString() == tempSN &&
                         FPYRawData.Rows[j][BOMPN - 1].ToString() == tempBOMPN &&
-                        FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev &&
+                        (FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev||Ignor_PN_Rev) &&
                         FPYRawData.Rows[j][DataSetName - 1].ToString() == tempdatasetname &&
                         FPYRawData.Rows[j][DataName - 1].ToString() == tempDataName)
                         FPYRawData.Rows[j][Flag - 1] = "Del";
@@ -2915,7 +2927,7 @@ namespace Yield_Query_Tool
         {
             DataSet ds;
 
-            
+
             //This sql process is as below:
             //1. Pull out all SN according to Input Job ID list
             //2. Pull out the latest ROUTE_ID whose SN is in SN list of above step ---MAX(b.ROUTE_ID)
@@ -2935,13 +2947,13 @@ namespace Yield_Query_Tool
 
                 JobID = JobID.Replace(",", "','");
                 string temp = " in ('" + JobID + "')";
-                sql=sql.Replace("Replace_JobID_Here", temp);
+                sql = sql.Replace("Replace_JobID_Here", temp);
 
                 //sql += " order by a.MFR_SN, f.time DESC";
 
                 ds = GetOracleDataSet2(connectionstring, sql);
 
-                
+
 
                 return ds;
 
