@@ -1295,6 +1295,7 @@ namespace Yield_Query_Tool
 
                     // Read the stream to a string, and write the string to the console.
                     line = sr.ReadToEnd().Trim();
+                    sr.Dispose();
                     //Console.WriteLine(line);
 
 
@@ -1303,9 +1304,13 @@ namespace Yield_Query_Tool
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("The file could not be read:");
-                    Console.WriteLine(e.Message);
+                    //Console.WriteLine("The file could not be read:");
+                    //Console.WriteLine(e.Message);
+                    MessageBox.Show("The file could not be read:\n" + e.Message);
+
                 }
+                
+
 
 
             }

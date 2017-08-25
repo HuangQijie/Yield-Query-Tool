@@ -39,6 +39,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.checkBox_Ignore_PNRev = new System.Windows.Forms.CheckBox();
             this.WIP_Status_Enable_checkBox = new System.Windows.Forms.CheckBox();
             this.Comp_Already_Removed_checkBox = new System.Windows.Forms.CheckBox();
             this.Comp_Type_listBox = new System.Windows.Forms.ListBox();
@@ -198,7 +199,6 @@
             this.WIP_Status_dataGridView = new System.Windows.Forms.DataGridView();
             this.MainPanelToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.checkBox_Ignore_PNRev = new System.Windows.Forms.CheckBox();
             this.MainTabControl.SuspendLayout();
             this.MainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDataGridView)).BeginInit();
@@ -252,7 +252,6 @@
             // 
             // MainTab
             // 
-            this.MainTab.Controls.Add(this.checkBox_Ignore_PNRev);
             this.MainTab.Controls.Add(this.WIP_Status_Enable_checkBox);
             this.MainTab.Controls.Add(this.Comp_Already_Removed_checkBox);
             this.MainTab.Controls.Add(this.Comp_Type_listBox);
@@ -330,6 +329,7 @@
             this.MainTab.Controls.Add(this.SearchDataGridView);
             this.MainTab.Controls.Add(this.Search_LastRecord_checkBox);
             this.MainTab.Controls.Add(this.Search_FirstRecord_checkBox);
+            this.MainTab.Controls.Add(this.checkBox_Ignore_PNRev);
             this.MainTab.ForeColor = System.Drawing.SystemColors.ControlText;
             this.MainTab.Location = new System.Drawing.Point(4, 22);
             this.MainTab.Name = "MainTab";
@@ -338,6 +338,17 @@
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Main Panel";
             this.MainTab.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_Ignore_PNRev
+            // 
+            this.checkBox_Ignore_PNRev.AutoSize = true;
+            this.checkBox_Ignore_PNRev.Enabled = false;
+            this.checkBox_Ignore_PNRev.Location = new System.Drawing.Point(636, 263);
+            this.checkBox_Ignore_PNRev.Name = "checkBox_Ignore_PNRev";
+            this.checkBox_Ignore_PNRev.Size = new System.Drawing.Size(97, 17);
+            this.checkBox_Ignore_PNRev.TabIndex = 92;
+            this.checkBox_Ignore_PNRev.Text = "Ignore PN Rev";
+            this.checkBox_Ignore_PNRev.UseVisualStyleBackColor = true;
             // 
             // WIP_Status_Enable_checkBox
             // 
@@ -1173,7 +1184,7 @@
             // FYResultTableExport
             // 
             this.FYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYResultTableExport.Location = new System.Drawing.Point(1104, 566);
+            this.FYResultTableExport.Location = new System.Drawing.Point(1087, 566);
             this.FYResultTableExport.Name = "FYResultTableExport";
             this.FYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FYResultTableExport.TabIndex = 10;
@@ -1184,7 +1195,7 @@
             // FPYResultTableExport
             // 
             this.FPYResultTableExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYResultTableExport.Location = new System.Drawing.Point(1104, 12);
+            this.FPYResultTableExport.Location = new System.Drawing.Point(1087, 12);
             this.FPYResultTableExport.Name = "FPYResultTableExport";
             this.FPYResultTableExport.Size = new System.Drawing.Size(75, 23);
             this.FPYResultTableExport.TabIndex = 9;
@@ -1203,7 +1214,7 @@
             this.FYTabledataGridView.Location = new System.Drawing.Point(9, 598);
             this.FYTabledataGridView.Name = "FYTabledataGridView";
             this.FYTabledataGridView.ReadOnly = true;
-            this.FYTabledataGridView.Size = new System.Drawing.Size(1170, 166);
+            this.FYTabledataGridView.Size = new System.Drawing.Size(1153, 166);
             this.FYTabledataGridView.TabIndex = 8;
             // 
             // FPYTabledataGridView
@@ -1217,13 +1228,13 @@
             this.FPYTabledataGridView.Location = new System.Drawing.Point(9, 43);
             this.FPYTabledataGridView.Name = "FPYTabledataGridView";
             this.FPYTabledataGridView.ReadOnly = true;
-            this.FPYTabledataGridView.Size = new System.Drawing.Size(1170, 166);
+            this.FPYTabledataGridView.Size = new System.Drawing.Size(1153, 166);
             this.FPYTabledataGridView.TabIndex = 8;
             // 
             // FYRawDataExport
             // 
             this.FYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FYRawDataExport.Location = new System.Drawing.Point(1104, 768);
+            this.FYRawDataExport.Location = new System.Drawing.Point(1087, 768);
             this.FYRawDataExport.Name = "FYRawDataExport";
             this.FYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FYRawDataExport.TabIndex = 7;
@@ -1234,7 +1245,7 @@
             // FPYRawDataExport
             // 
             this.FPYRawDataExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPYRawDataExport.Location = new System.Drawing.Point(1104, 215);
+            this.FPYRawDataExport.Location = new System.Drawing.Point(1087, 215);
             this.FPYRawDataExport.Name = "FPYRawDataExport";
             this.FPYRawDataExport.Size = new System.Drawing.Size(75, 25);
             this.FPYRawDataExport.TabIndex = 7;
@@ -1272,7 +1283,7 @@
             this.FYRawdataGridView.Location = new System.Drawing.Point(9, 805);
             this.FYRawdataGridView.Name = "FYRawdataGridView";
             this.FYRawdataGridView.ReadOnly = true;
-            this.FYRawdataGridView.Size = new System.Drawing.Size(1170, 316);
+            this.FYRawdataGridView.Size = new System.Drawing.Size(1153, 316);
             this.FYRawdataGridView.TabIndex = 5;
             this.FYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1287,7 +1298,7 @@
             this.FPYRawdataGridView.Location = new System.Drawing.Point(9, 254);
             this.FPYRawdataGridView.Name = "FPYRawdataGridView";
             this.FPYRawdataGridView.ReadOnly = true;
-            this.FPYRawdataGridView.Size = new System.Drawing.Size(1170, 304);
+            this.FPYRawdataGridView.Size = new System.Drawing.Size(1153, 304);
             this.FPYRawdataGridView.TabIndex = 4;
             this.FPYRawdataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPYRawdataGridView_CellContentDoubleClick);
             // 
@@ -1729,7 +1740,7 @@
             // FY_Plot_Export_button
             // 
             this.FY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Plot_Export_button.Location = new System.Drawing.Point(1091, 1277);
+            this.FY_Plot_Export_button.Location = new System.Drawing.Point(1074, 1277);
             this.FY_Plot_Export_button.Name = "FY_Plot_Export_button";
             this.FY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Plot_Export_button.TabIndex = 5;
@@ -1740,7 +1751,7 @@
             // FPY_Plot_Export_button
             // 
             this.FPY_Plot_Export_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(1091, 321);
+            this.FPY_Plot_Export_button.Location = new System.Drawing.Point(1074, 321);
             this.FPY_Plot_Export_button.Name = "FPY_Plot_Export_button";
             this.FPY_Plot_Export_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Plot_Export_button.TabIndex = 4;
@@ -1751,7 +1762,7 @@
             // FY_Yield_Plot_data_button
             // 
             this.FY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(1091, 964);
+            this.FY_Yield_Plot_data_button.Location = new System.Drawing.Point(1074, 964);
             this.FY_Yield_Plot_data_button.Name = "FY_Yield_Plot_data_button";
             this.FY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FY_Yield_Plot_data_button.TabIndex = 3;
@@ -1762,7 +1773,7 @@
             // FPY_Yield_Plot_data_button
             // 
             this.FPY_Yield_Plot_data_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(1091, 7);
+            this.FPY_Yield_Plot_data_button.Location = new System.Drawing.Point(1074, 7);
             this.FPY_Yield_Plot_data_button.Name = "FPY_Yield_Plot_data_button";
             this.FPY_Yield_Plot_data_button.Size = new System.Drawing.Size(75, 23);
             this.FPY_Yield_Plot_data_button.TabIndex = 2;
@@ -1785,7 +1796,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.FY_Yield_Plot_chart.Series.Add(series1);
-            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(1127, 541);
+            this.FY_Yield_Plot_chart.Size = new System.Drawing.Size(1110, 541);
             this.FY_Yield_Plot_chart.TabIndex = 1;
             this.FY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1804,7 +1815,7 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.FPY_Yield_Plot_chart.Series.Add(series2);
-            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(1149, 563);
+            this.FPY_Yield_Plot_chart.Size = new System.Drawing.Size(1132, 563);
             this.FPY_Yield_Plot_chart.TabIndex = 1;
             this.FPY_Yield_Plot_chart.Click += new System.EventHandler(this.FPY_Yield_Plot_chart_Click);
             // 
@@ -1819,7 +1830,7 @@
             this.FY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 1005);
             this.FY_Yield_Plot_dataGridView.Name = "FY_Yield_Plot_dataGridView";
             this.FY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1149, 266);
+            this.FY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1132, 266);
             this.FY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -1834,7 +1845,7 @@
             this.FPY_Yield_Plot_dataGridView.Location = new System.Drawing.Point(17, 36);
             this.FPY_Yield_Plot_dataGridView.Name = "FPY_Yield_Plot_dataGridView";
             this.FPY_Yield_Plot_dataGridView.ReadOnly = true;
-            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1149, 260);
+            this.FPY_Yield_Plot_dataGridView.Size = new System.Drawing.Size(1132, 260);
             this.FPY_Yield_Plot_dataGridView.TabIndex = 0;
             this.FPY_Yield_Plot_dataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FPY_Yield_Plot_dataGridView_CellContentDoubleClick);
             // 
@@ -2066,17 +2077,6 @@
             // 
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
-            // 
-            // checkBox_Ignore_PNRev
-            // 
-            this.checkBox_Ignore_PNRev.AutoSize = true;
-            this.checkBox_Ignore_PNRev.Enabled = false;
-            this.checkBox_Ignore_PNRev.Location = new System.Drawing.Point(636, 263);
-            this.checkBox_Ignore_PNRev.Name = "checkBox_Ignore_PNRev";
-            this.checkBox_Ignore_PNRev.Size = new System.Drawing.Size(97, 17);
-            this.checkBox_Ignore_PNRev.TabIndex = 92;
-            this.checkBox_Ignore_PNRev.Text = "Ignore PN Rev";
-            this.checkBox_Ignore_PNRev.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
