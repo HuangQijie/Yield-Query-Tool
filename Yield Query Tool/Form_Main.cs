@@ -1197,6 +1197,22 @@ namespace Yield_Query_Tool
 
             string[] FieldName = QueryHistroyString.Split('\t');
 
+            YieldEnablecheckBox.Checked = false;
+            CPKEnablecheckBox.Checked = false;
+            Search_Enable_checkBox.Checked = false;
+            DataSet_TestTime_checkBox.Checked = false;
+
+            if (FieldName[QueryType] == "Search")
+                Search_Enable_checkBox.Checked = true;
+
+            if (FieldName[QueryType] == "FPY&FY")
+                YieldEnablecheckBox.Checked = true;
+
+            if (FieldName[QueryType] == "CPK")
+                CPKEnablecheckBox.Checked = true;
+
+            if (FieldName[QueryType] == "TestTime")
+                DataSet_TestTime_checkBox.Checked = true;
 
             SerialNumber.Text = FieldName[SN];
             JobOrder.Text = FieldName[JobID];
@@ -1219,6 +1235,7 @@ namespace Yield_Query_Tool
             //yyyymmdd073000 = datetime.Value.ToString("yyyyMMdd") + "073000";
             //return yyyymmdd073000;
 
+
             StartTimePicker.Value = DateTime.ParseExact(FieldName[Start_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
             EndTimePicker.Value = DateTime.ParseExact(FieldName[End_Time], "yyyyMMddHHmmss", System.Globalization.CultureInfo.CurrentCulture);
             //StartTime_HHMMSS_textBox.Text = FieldName[Start_Time].Substring(8, FieldName[Start_Time].Length - 8);
@@ -1239,24 +1256,9 @@ namespace Yield_Query_Tool
             Comp_Already_Removed_checkBox.Checked = bool.Parse(FieldName[Comp_Already_Removed_checkBox_Checked]);
             checkBox_Ignore_PNRev.Checked = bool.Parse(FieldName[Ignore_PN_Rev_Checked]);
 
-            YieldEnablecheckBox.Checked = false;
-            CPKEnablecheckBox.Checked = false;
-            Search_Enable_checkBox.Checked = false;
-            DataSet_TestTime_checkBox.Checked = false;
-
-            if (FieldName[QueryType] == "Search")
-                Search_Enable_checkBox.Checked = true;
-
-            if (FieldName[QueryType] == "FPY&FY")
-                YieldEnablecheckBox.Checked = true;
-
-            if (FieldName[QueryType] == "CPK")
-                CPKEnablecheckBox.Checked = true;
-
-            if (FieldName[QueryType] == "TestTime")
-                DataSet_TestTime_checkBox.Checked = true;
 
 
+            
 
 
 
