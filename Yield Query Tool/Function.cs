@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 
 
@@ -27,6 +29,8 @@ namespace Yield_Query_Tool
 
         String sql = "";
         DataSet ds = new DataSet();
+
+
 
         public void InitialGetFromConfig(string dbPath, ListBox Step_listBox, ListBox DataSet_listBox, ComboBox DataName)
         {
@@ -381,13 +385,38 @@ namespace Yield_Query_Tool
             ////------------------------------------------------------------
 
 
-            //OracleConnection OracleConn = oracledbo.OpenOracleConnection2(connectionstring);
-            //InformLabel.Text = "Searching...";
-            //pass = oracledbo.GetOracleDataSet2(passsql, OracleConn);
-            pass = GetOracleDataSet2(connectionstring, passsql);
-            //fail = oracledbo.GetOracleDataSet2(failsql, OracleConn);
-            fail = GetOracleDataSet2(connectionstring, failsql);
 
+
+
+            //Task pass_task = Task.Run(() => { pass = GetOracleDataSet2(connectionstring, passsql); });
+
+            Task<DataSet> pass_task = Task<DataSet>.Factory.StartNew(() =>
+            {
+                pass = GetOracleDataSet2(connectionstring, passsql);
+                return pass;
+            });
+           
+
+            Task<DataSet> fail_task = Task<DataSet>.Factory.StartNew(() =>
+            {
+                fail = GetOracleDataSet2(connectionstring, failsql);
+                return fail;
+            });
+
+            pass = pass_task.Result;
+            fail = fail_task.Result;
+            
+            pass_task.Dispose();
+            fail_task.Dispose();
+            
+
+
+
+            ////------------------------------------------------------------
+            //pass = GetOracleDataSet2(connectionstring, passsql);
+
+            //fail = GetOracleDataSet2(connectionstring, failsql);
+            ////------------------------------------------------------------
 
             pass.Tables[0].Columns.Add("DATA_NAME");
             pass.Tables[0].Columns.Add("DATA_VAL");
@@ -453,7 +482,7 @@ namespace Yield_Query_Tool
                     string BOMPN, string BOMPNRev, string ModelID, string DataSet, string DataName, string DataNameVal,
                     string DataSetStatus, string DataStatus, string StartTime, string EndTime, Label InformLabel, string Comp_SN, string Comp_Type,
             string Comp_edata_name, string Comp_edata_name_Val, bool Comp_eData_Include_checkBox_Checked, string Search_Record_Type, string Comp_PN,
-            bool Comp_Already_Removed_checkBox_Checked,bool Ignore_PN_Rev)
+            bool Comp_Already_Removed_checkBox_Checked, bool Ignore_PN_Rev)
         {
             if (Comp_eData_Include_checkBox_Checked)
             {
@@ -647,12 +676,24 @@ namespace Yield_Query_Tool
             //OracleConnection OracleConn = oracledbo.OpenOracleConnection2(connectionstring);
             //InformLabel.Text = "Searching...";
             //ds = oracledbo.GetOracleDataSet2(sql, OracleConn);
+
+            //Thread t = new Thread(() =>
+            //{
+            //    ds = GetOracleDataSet2(connectionstring, sql);
+
+            //});
+
+            //t.IsBackground = true;
+
+            //t.Start();
+
+
             ds = GetOracleDataSet2(connectionstring, sql);
+
             if (Search_Record_Type == "FirstRecord" || Search_Record_Type == "LastRecord")
                 ds = RemoveDuplicateRows(ds.Tables[0], Ignore_PN_Rev);
 
-            //oracledbo.OracleConnectionClose();
-            //OracleConn.Close();
+
             return ds;
         }
 
@@ -1309,7 +1350,7 @@ namespace Yield_Query_Tool
                     MessageBox.Show("The file could not be read:\n" + e.Message);
 
                 }
-                
+
 
 
 
@@ -1715,29 +1756,23 @@ namespace Yield_Query_Tool
 
         public DataSet GetOracleDataSet2(string ConnectionStr, string SQLString)
         {
+
+
+
             OracleConnection Oracleconn = new OracleConnection(ConnectionStr);
-            //LogInfo.writeLog(String.Format("open ORA DB connection: {0}", ConnectionStr));
+
 
             try
             {
-                // Thread.Sleep(3000);
 
-                //string temp = Oracleconn.State.ToString();
                 if (Oracleconn.State == ConnectionState.Closed)
-                //if(temp=="Closed")
                 {
 
-                    //Application.DoEvents();
-                    // previus I often got curruption of the heap error and dont know why, maybe it is because Oracle_OCI has not been loaded in time? 2016.7.13
-                    //MessageBox.Show(Oracleconn.State.ToString());
-
                     Oracleconn.Open();
-
 
                 }
                 else if (Oracleconn.State == ConnectionState.Broken)
                 {
-                    //LogInfo.writeLog(String.Format("open ORA DB connection fail: {0}", ConnectionStr));
                     Oracleconn.Close();
                     Oracleconn.Open();
                 }
@@ -1748,53 +1783,53 @@ namespace Yield_Query_Tool
                 throw new Exception(e.Message);
             }
 
-            DataSet ds = new DataSet();
+
             try
             {
+                DataSet ds = new DataSet();
+
                 OracleDataAdapter sda = new OracleDataAdapter(SQLString, Oracleconn);
+                //Form_InformBox form = new Form_InformBox();
+
+                //form.Enabled = true;
+
+
+
+
+
                 sda.Fill(ds, "ds");
+                //form.Enabled = false;
+                //form.Dispose();
+                //form.Dispose_Form_and_Thread();
+
+
+
+
                 Oracleconn.Close();
                 Oracleconn.Dispose();
                 return ds;
             }
             catch (OleDbException ex)
             {
+                //DataSet ds = new DataSet();
+
+                Oracleconn.Close();
+                Oracleconn.Dispose();
+                return ds;
                 throw new Exception(ex.Message);
+
+
             }
-            Oracleconn.Close();
-            Oracleconn.Dispose();
-            return ds;
-
-        }
 
 
-        public void OracleConnectionClose(OracleConnection Oracleconn)
-        {
-            Oracleconn.Close();
 
 
         }
+        //private delegate DataSet MyDelegate(string ConnectionStr, string SQLString);// this is for speed up the SQL query by multi threading
 
-        //public void OpenAccessConnection2(string dbPath)
-        //{
-        //    //string dbPath;
 
-        //    string connectionString;
-        //    OleDbConnection AccessConnection;
-        //    //OleDbCommand cmd;
-        //    //this.dbPath = dbPath;
-        //    connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + dbPath + ";User Id=admin;Password=";
-        //    AccessConnection = new OleDbConnection(connectionString);
-        //    try
-        //    {
-        //        AccessConnection.Open();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.ToString());
-        //    }
-        //   // return AccessConnection;
-        //}
+
+
         public DataSet GetAccessDataset2(string dbPath, string SQLString)
         {
 
@@ -2890,7 +2925,7 @@ namespace Yield_Query_Tool
                 {
                     if (FPYRawData.Rows[j][SN - 1].ToString() == tempSN &&
                         FPYRawData.Rows[j][BOMPN - 1].ToString() == tempBOMPN &&
-                        (FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev||Ignor_PN_Rev) &&
+                        (FPYRawData.Rows[j][BOMPNRev - 1].ToString() == tempBOMPNRev || Ignor_PN_Rev) &&
                         FPYRawData.Rows[j][DataSetName - 1].ToString() == tempdatasetname &&
                         FPYRawData.Rows[j][DataName - 1].ToString() == tempDataName)
                         FPYRawData.Rows[j][Flag - 1] = "Del";
@@ -2976,6 +3011,9 @@ namespace Yield_Query_Tool
 
 
 
+
     }
+
+
 }
 

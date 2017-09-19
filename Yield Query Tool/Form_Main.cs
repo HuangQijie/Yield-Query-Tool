@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 //using System.Windows.Forms.DataVisualization.Charting;
 
 //using System.Data.SqlClient;
@@ -11,6 +13,7 @@ using System.IO;
 
 namespace Yield_Query_Tool
 {
+
     public partial class MainForm : Form
     {
         Function fc = new Function();
@@ -31,7 +34,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "4.5";
+        public string SWVersion = "5.0";
 
         //
 
@@ -171,12 +174,20 @@ namespace Yield_Query_Tool
                 Search_Record_Type = "LastRecord";
 
             DateTime start = DateTime.Now;
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.MainOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                 BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(),
                 Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
                 DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel,
                 Comp_SN_textBox.Text.Trim(), Comp_Type_InforLabel.Text.Trim(), Comp_eDataName_comboBox.Text.Trim(), Comp_eData_Value_textBox.Text.Trim(),
                 Comp_eData_Include_checkBox.Checked, Search_Record_Type, Comp_PN_textBox.Text.Trim(), Comp_Already_Removed_checkBox.Checked, checkBox_Ignore_PNRev.Checked);
+
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
+
+
             SearchDataGridView.DataSource = ds;
             SearchDataGridView.DataMember = ds.Tables[0].TableName;
             //SearchDataGridView = fc.ChangeDataGridColor(SearchDataGridView);
@@ -232,9 +243,15 @@ namespace Yield_Query_Tool
             //SearchDataGridView.Rows.Clear();
             //FPYRawdataGridView.Rows.Clear();
             //FYRawdataGridView.Rows.Clear();
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.YieldOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(), BOMPN.Text.Trim(),
-                BOMPNRev.Text.Trim(), ModelID.Text.Trim(), Selected_Dataset_InforLabel.Text.Trim(),
-                DataName.Text.Trim(), StartTime, EndTime, MainPanelInformLabel);
+               BOMPNRev.Text.Trim(), ModelID.Text.Trim(), Selected_Dataset_InforLabel.Text.Trim(),
+               DataName.Text.Trim(), StartTime, EndTime, MainPanelInformLabel);
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
+
             DateTime end = DateTime.Now;
             //ds = fc.MainOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(), BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(), DataSet.Text.Trim(), DataName.Text.Trim(), DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel);
             if (ds.Tables[0].Rows.Count > 0)
@@ -421,9 +438,16 @@ namespace Yield_Query_Tool
                 Application.DoEvents();
                 DateTime start = DateTime.Now;
                 //SearchDataGridView.Rows.Clear();
+
+                var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+                query_remaining_time_form_pop(Cancle_ts);
+
                 ds = fc.CPKOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                     BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(), Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
                     DataSetStatus.Text.Trim(), DataNameStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel);
+
+                query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
+
                 SearchDataGridView.DataSource = ds;
                 SearchDataGridView.DataMember = ds.Tables[0].TableName;
                 //SearchDataGridView = fc.ChangeDataGridColor(SearchDataGridView);
@@ -674,7 +698,13 @@ namespace Yield_Query_Tool
         {
             DataSet ds;
 
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.WhereUsedOracleQuery(OracleConnectString, AlreadyRemoved_checkBox_Yes.Checked, SN_WhereUsed.Text.Trim());
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
+
             if (ds != null)
             {
                 WhereUsed_dataGridView.DataSource = ds;
@@ -847,9 +877,15 @@ namespace Yield_Query_Tool
             MainPanelInformLabel.ForeColor = System.Drawing.Color.Red;
             Application.DoEvents();
             //SearchDataGridView.Rows.Clear();
+
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.DataSet_TestTime_OracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                 BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(),
                 Selected_Dataset_InforLabel.Text.Trim(), DataSetStatus.Text.Trim(), StartTime, EndTime, MainPanelInformLabel);
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
 
             MainPanelInformLabel.Text = "Result is shown in DataSet TestTime Tab";
             MainPanelInformLabel.ForeColor = System.Drawing.Color.Red;
@@ -1258,7 +1294,7 @@ namespace Yield_Query_Tool
 
 
 
-            
+
 
 
 
@@ -1305,7 +1341,12 @@ namespace Yield_Query_Tool
             Application.DoEvents();
             DataSet ds;
 
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.Component_Edata_Search(OracleConnectString, Component_Edata_SN_textBox.Text.Trim(), Component_Edata_DataName_textBox.Text.Trim(), Component_Edata_DataVal_textBox.Text.Trim());
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
 
             Component_Edata_dataGridView.DataSource = ds;
 
@@ -1564,7 +1605,12 @@ namespace Yield_Query_Tool
             Application.DoEvents();
             DataSet ds;
 
+            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            query_remaining_time_form_pop(Cancle_ts);
+
             ds = fc.WIP_Status_Search(OracleConnectString, WIP_Status_JobID_textBox.Text.Trim());
+
+            query_remaining_time_form_close(Cancle_ts);// As ds is filled => cancel this task
 
 
             WIP_Status_dataGridView.DataSource = ds;
@@ -1589,6 +1635,57 @@ namespace Yield_Query_Tool
         }
 
 
+        private void query_remaining_time_form_pop(CancellationTokenSource Cancle_ts)
+        {
+            //-----------------------------------------------------------
+            //refer to https://stackoverflow.com/questions/4783865/how-do-i-abort-cancel-tpl-tasks
+            //pop up a form to show Query_Remaining_Time
+            //var Cancle_ts = new CancellationTokenSource();
+            CancellationToken ct = Cancle_ts.Token;
+
+            Task task = Task.Factory.StartNew(() =>
+            {
+
+                Form_InformBox form = new Form_InformBox();
+                Function fn = new Function();
+
+
+                DataSet ds1 = new DataSet();
+                DateTime start1 = DateTime.Now;
+                double Elaspe_Seconds = 0;
+                while (true)
+                {
+                    DateTime end1 = DateTime.Now;
+                    Elaspe_Seconds = (end1 - start1).TotalSeconds;
+                    string Elapse_Time = Elaspe_Seconds.ToString("0.0");
+                    string sql = "select Sum(time_remaining) from V$SESSION_LONGOPS where time_remaining>0 and username in ('EXTVIEWER','TEST')";
+                    string Query_Remaining_Time = fn.GetOracleDataSet2(OracleConnectString, sql).Tables[0].Rows[0][0].ToString();
+                    string Infor_Msg = "Elapse Time is " + Elapse_Time + " Seconds\n Estimated Query Remaining Time is " + Query_Remaining_Time + " Seconds";
+
+                    form.Change_Label_Infor_MSG(Infor_Msg);
+                    Application.DoEvents();
+                    Thread.Sleep(500);
+                    
+                    if (ct.IsCancellationRequested)
+                    {
+                        // another thread decided to cancel
+
+                        form.Hide();
+                        form.Dispose();
+                        break;
+                    }
+                    
+                    
+                }
+                
+
+            }, ct);
+        }
+
+        private void query_remaining_time_form_close(CancellationTokenSource Cancle_ts)
+        {
+            Cancle_ts.Cancel();// // As ds is filled => cancel this task 
+        }
 
     }
 
