@@ -314,7 +314,7 @@ namespace Yield_Query_Tool
             string failsql;
 
 
-            sql = "SELECT a.MFR_SN AS SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev," +
+            string sql_SN_All = "SELECT a.MFR_SN AS SN,b.JOB_ID  AS JOB_ID,  c.MODEL_ID  AS Model_ID,c.BOM_PN  AS BOM_PN,c.BOM_PN_REV BOM_PN_Rev," +
             "d.DATASET_NAME AS DataSet_Name,d.STATUS AS DataSetStatus,d.END_TIME AS DataSet_EndTime," +
             "e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec," +
             "d.STATION as Station, j.Computer as Computer,d.ROUTE_ID as Route_ID," +
@@ -323,6 +323,13 @@ namespace Yield_Query_Tool
         " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID" +
         " INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID INNER JOIN STATIONS j on J.Name=D.Station" +
         " INNER JOIN route_data e ON e.DATASET_ID = d.DATASET_ID  WHERE '1' = '1'";
+            // sql_SN_All is oulling yield based on SN not from Dataset testtime, it should be a more acurate yield
+
+
+            sql = "SELECT a.MFR_SN AS SN" + " FROM parts a INNER JOIN routes b ON b.PART_INDEX = a.OPT_INDEX INNER JOIN bom_context_id c ON c.BOM_CONTEXT_ID = b.BOM_CONTEXT_ID" +
+        " INNER JOIN datasets d ON d.ROUTE_ID = b.ROUTE_ID" +
+        "  WHERE '1' = '1'";// used to pull out the SN based on the given dataset testtime period
+
             if (SerialNumber.Length != 0)
             {
                 SerialNumber = SerialNumber.Replace(",", "','");
@@ -353,6 +360,8 @@ namespace Yield_Query_Tool
             {
 
                 sql += " and " + "d.DATASET_NAME in ('" + DataSet.Replace(",", "','") + "')";
+
+                sql_SN_All += " and " + "d.DATASET_NAME in ('" + DataSet.Replace(",", "','") + "')";
             }
             //if (DataName.Length != 0)
             //    sql += " and " + "e.DATA_NAME like '" + DataName + "'";
@@ -370,13 +379,18 @@ namespace Yield_Query_Tool
                 sql += " and " + "d.END_TIME between '" + StartTime + "' and '" + EndTime + "'";
 
             //  to sql out the pass conditon, only get the dataset level in oder to save time
-            passsql = sql.Replace(",e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec", "") + "and d.STATUS <>'FAIL'";
-            passsql = passsql.Replace(" INNER JOIN route_data e ON e.DATASET_ID = d.DATASET_ID", "");
-            //passsql += "ORDER BY SN,  d.DATASET_NAME, d.END_TIME";
+            string SN_in = " and a.MFR_SN in ( " + sql + " ) ";
+            passsql = sql_SN_All.Replace(",e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec", "") + "and d.STATUS <>'FAIL' " + SN_in;
+            failsql = sql_SN_All + "and d.STATUS='FAIL' and (e.DATA_NAME = 'failed' or e.DATA_VAL2='FAIL'or e.DATA_VAL2='ERROR' or e.DATA_NAME like '%ERROR%') and e.DATA_VAL1 <> 'not run' " + SN_in;
+            passsql = passsql.Replace("INNER JOIN route_data e ON e.DATASET_ID = d.DATASET_ID", "");
+
+
+
+            //passsql = sql.Replace(",e.DATA_NAME AS Data_Name,e.DATA_VAL1  AS Data_Val,e.DATA_VAL2 AS Data_Status,e.DATA_VAL3 AS Data_Spec", "") + "and d.STATUS <>'FAIL'";
 
             // to sql out the failed condition, get to dataname level
-            failsql = sql + "and d.STATUS='FAIL' and (e.DATA_NAME = 'failed' or e.DATA_VAL2='FAIL'or e.DATA_VAL2='ERROR' or e.DATA_NAME like '%ERROR%') and e.DATA_VAL1 <> 'not run'";
-            //failsql += "ORDER BY SN,  d.DATASET_NAME, d.END_TIME";
+            //failsql = sql + "and d.STATUS='FAIL' and (e.DATA_NAME = 'failed' or e.DATA_VAL2='FAIL'or e.DATA_VAL2='ERROR' or e.DATA_NAME like '%ERROR%') and e.DATA_VAL1 <> 'not run'";
+
 
 
             ////------------------------------------------------------------
@@ -395,7 +409,7 @@ namespace Yield_Query_Tool
                 pass = GetOracleDataSet2(connectionstring, passsql);
                 return pass;
             });
-           
+
 
             Task<DataSet> fail_task = Task<DataSet>.Factory.StartNew(() =>
             {
@@ -405,10 +419,10 @@ namespace Yield_Query_Tool
 
             pass = pass_task.Result;
             fail = fail_task.Result;
-            
+
             pass_task.Dispose();
             fail_task.Dispose();
-            
+
 
 
 

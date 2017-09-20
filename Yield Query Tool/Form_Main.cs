@@ -34,7 +34,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "5.0";
+        public string SWVersion = "5.1";
 
         //
 
@@ -174,8 +174,8 @@ namespace Yield_Query_Tool
                 Search_Record_Type = "LastRecord";
 
             DateTime start = DateTime.Now;
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            var Cancle_ts=query_remaining_time_form_pop();
 
             ds = fc.MainOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                 BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(),
@@ -243,8 +243,9 @@ namespace Yield_Query_Tool
             //SearchDataGridView.Rows.Clear();
             //FPYRawdataGridView.Rows.Clear();
             //FYRawdataGridView.Rows.Clear();
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            //query_remaining_time_form_pop(Cancle_ts);
+            var Cancle_ts = query_remaining_time_form_pop();
 
             ds = fc.YieldOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(), BOMPN.Text.Trim(),
                BOMPNRev.Text.Trim(), ModelID.Text.Trim(), Selected_Dataset_InforLabel.Text.Trim(),
@@ -439,8 +440,9 @@ namespace Yield_Query_Tool
                 DateTime start = DateTime.Now;
                 //SearchDataGridView.Rows.Clear();
 
-                var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-                query_remaining_time_form_pop(Cancle_ts);
+                //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+                //query_remaining_time_form_pop(Cancle_ts);
+                var Cancle_ts = query_remaining_time_form_pop();
 
                 ds = fc.CPKOracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                     BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(), Selected_Dataset_InforLabel.Text.Trim(), DataName.Text.Trim(), DataNameVal.Text.Trim(),
@@ -698,8 +700,9 @@ namespace Yield_Query_Tool
         {
             DataSet ds;
 
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            //query_remaining_time_form_pop(Cancle_ts);
+            var Cancle_ts = query_remaining_time_form_pop();
 
             ds = fc.WhereUsedOracleQuery(OracleConnectString, AlreadyRemoved_checkBox_Yes.Checked, SN_WhereUsed.Text.Trim());
 
@@ -878,8 +881,9 @@ namespace Yield_Query_Tool
             Application.DoEvents();
             //SearchDataGridView.Rows.Clear();
 
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            //query_remaining_time_form_pop(Cancle_ts);
+            var Cancle_ts = query_remaining_time_form_pop();
 
             ds = fc.DataSet_TestTime_OracleQuery(OracleConnectString, SerialNumber.Text.Trim(), JobOrder.Text.Trim(),
                 BOMPN.Text.Trim(), BOMPNRev.Text.Trim(), ModelID.Text.Trim(),
@@ -1341,8 +1345,9 @@ namespace Yield_Query_Tool
             Application.DoEvents();
             DataSet ds;
 
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            //query_remaining_time_form_pop(Cancle_ts);
+            var Cancle_ts = query_remaining_time_form_pop();
 
             ds = fc.Component_Edata_Search(OracleConnectString, Component_Edata_SN_textBox.Text.Trim(), Component_Edata_DataName_textBox.Text.Trim(), Component_Edata_DataVal_textBox.Text.Trim());
 
@@ -1605,8 +1610,9 @@ namespace Yield_Query_Tool
             Application.DoEvents();
             DataSet ds;
 
-            var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
-            query_remaining_time_form_pop(Cancle_ts);
+            //var Cancle_ts = new CancellationTokenSource();//pop up a form to show Query_Remaining_Time
+            //query_remaining_time_form_pop(Cancle_ts);
+            var Cancle_ts = query_remaining_time_form_pop();
 
             ds = fc.WIP_Status_Search(OracleConnectString, WIP_Status_JobID_textBox.Text.Trim());
 
@@ -1635,12 +1641,12 @@ namespace Yield_Query_Tool
         }
 
 
-        private void query_remaining_time_form_pop(CancellationTokenSource Cancle_ts)
+        private CancellationTokenSource query_remaining_time_form_pop()
         {
             //-----------------------------------------------------------
             //refer to https://stackoverflow.com/questions/4783865/how-do-i-abort-cancel-tpl-tasks
             //pop up a form to show Query_Remaining_Time
-            //var Cancle_ts = new CancellationTokenSource();
+            var Cancle_ts = new CancellationTokenSource();
             CancellationToken ct = Cancle_ts.Token;
 
             Task task = Task.Factory.StartNew(() =>
@@ -1650,17 +1656,17 @@ namespace Yield_Query_Tool
                 Function fn = new Function();
 
 
-                DataSet ds1 = new DataSet();
-                DateTime start1 = DateTime.Now;
+                
+                DateTime start = DateTime.Now;
                 double Elaspe_Seconds = 0;
                 while (true)
                 {
-                    DateTime end1 = DateTime.Now;
-                    Elaspe_Seconds = (end1 - start1).TotalSeconds;
+                    DateTime end = DateTime.Now;
+                    Elaspe_Seconds = (end - start).TotalSeconds;
                     string Elapse_Time = Elaspe_Seconds.ToString("0.0");
                     string sql = "select Sum(time_remaining) from V$SESSION_LONGOPS where time_remaining>0 and username in ('EXTVIEWER','TEST')";
                     string Query_Remaining_Time = fn.GetOracleDataSet2(OracleConnectString, sql).Tables[0].Rows[0][0].ToString();
-                    string Infor_Msg = "Elapse Time is " + Elapse_Time + " Seconds\n Estimated Query Remaining Time is " + Query_Remaining_Time + " Seconds";
+                    string Infor_Msg = "Elapse Time is " + Elapse_Time + " Seconds\n Estimated Query Remaining Time is " + (Query_Remaining_Time==""?"X":Query_Remaining_Time) + " Seconds";
 
                     form.Change_Label_Infor_MSG(Infor_Msg);
                     Application.DoEvents();
@@ -1680,6 +1686,8 @@ namespace Yield_Query_Tool
                 
 
             }, ct);
+
+            return Cancle_ts;
         }
 
         private void query_remaining_time_form_close(CancellationTokenSource Cancle_ts)
