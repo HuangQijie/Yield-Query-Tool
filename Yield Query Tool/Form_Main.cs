@@ -34,7 +34,7 @@ namespace Yield_Query_Tool
 
 
         //Change SWVersion here
-        public string SWVersion = "5.0";
+        public string SWVersion = "5.2";
 
         //
 
@@ -1660,7 +1660,7 @@ namespace Yield_Query_Tool
                     string Elapse_Time = Elaspe_Seconds.ToString("0.0");
                     string sql = "select Sum(time_remaining) from V$SESSION_LONGOPS where time_remaining>0 and username in ('EXTVIEWER','TEST')";
                     string Query_Remaining_Time = fn.GetOracleDataSet2(OracleConnectString, sql).Tables[0].Rows[0][0].ToString();
-                    string Infor_Msg = "Elapse Time is " + Elapse_Time + " Seconds\n Estimated Query Remaining Time is " + Query_Remaining_Time + " Seconds";
+                    string Infor_Msg = "Elapse Time is " + Elapse_Time + " Seconds\n Estimated Query Remaining Time is " + (Query_Remaining_Time==""?"X":Query_Remaining_Time) + " Seconds";
 
                     form.Change_Label_Infor_MSG(Infor_Msg);
                     Application.DoEvents();
