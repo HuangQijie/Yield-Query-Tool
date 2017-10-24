@@ -781,6 +781,7 @@ namespace Yield_Query_Tool
                                 columnValue += dgv.Rows[j].Cells[k].Value.ToString().Trim();
                                 columnValue = columnValue.Replace("\n", "\\n");// replace newline symbol
                                 columnValue = columnValue.Replace("\t", "\\t");// replace tab symbol
+                                columnValue = columnValue.Replace("\r", "\\r");// replace return symbol
                             }
 
                         }
