@@ -580,7 +580,7 @@ namespace Yield_Query_Tool
                         sql += " and " + "(e.DATA_NAME = '" + tempstring[0] + "'";
                     for (var i = 1; i < tempstring.Length; i++)
                     {
-                        if (tempstring[0].Contains("%"))
+                        if (tempstring[i].Contains("%"))
                             sql += " or " + "e.DATA_NAME like '" + tempstring[i] + "'";
                         else
                             sql += " or " + "e.DATA_NAME = '" + tempstring[i] + "'";
